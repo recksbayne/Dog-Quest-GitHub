@@ -1,0 +1,14 @@
+Thumbs.db
+Thumbs.db.meta
+*.sln
+*.userprefs
+*.csproj
+*.pbo
+*.unityproj
+*.exr
+*.exr.meta
+/Library
+/Temp
+/Fmod/.*
+/obj
+/.vs
