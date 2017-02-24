@@ -30,6 +30,8 @@ public class Scr_Player : MonoBehaviour {
 	// Status Check
 	public string vState; // 'State Machine'
 	public string vSubState; // I may need this for other info
+	public AnimationCurve aBounce;
+	public float aBounceFrame;
 	private bool vLocked = false; // Is Locked
 	private bool vAttack = false; // Is Attacking
 	private bool vDigging = false; // Is digging
@@ -37,12 +39,16 @@ public class Scr_Player : MonoBehaviour {
 
 	// Variables
 	public Vector3 vDirection;
-	public float vSpeed;
+	public float vSpeed = 5;
 	public float vAngle;
 	public char vAngNESW = 'N'; // Defines if you are facing north east south or west
+	public float vTmp = 1f;
 	public float vCamAngle;
 	private int vHoz;
 	private int vVer;
+
+	// Model Variable
+	public GameObject vModel;
 
 	// Compenents and Objects
 	public GameObject vCamera;
@@ -56,11 +62,25 @@ public class Scr_Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		FunInputCheck ();
+		cc.Move (vDirection * Time.deltaTime * vSpeed);
+
 	}
 	void LateUpdate(){
 		FunCameraFix ();
+		FunModelFix ();
+	}
+	void FunModelFix(){
+		if (aBounceFrame > 0f)
+			aBounceFrame += .05f;
+		if (aBounceFrame > 1f)
+			aBounceFrame = 0f;
+		float tTmp = aBounce.Evaluate (aBounceFrame)/4f;
+		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
+		//vModel.transform.localPosition = new Vector3(0f,aBounce.Evaluate (aBounceFrame),0f);
+		//aBounceFrame = aBounce.Evaluate (aBounceFrame);
 
 	}
+
 	void FunCameraFix(){ // Camera Set and rotation
 		Vector3 GotoVec3 = new Vector3(0f,0f,0f);
 		Vector3 vCamAngle = new Vector3 (15f, -135f, 0f);
@@ -83,14 +103,13 @@ public class Scr_Player : MonoBehaviour {
 			break;
 		}
 		if (vCamera.transform.localPosition != GotoVec3)
-		{vCamera.transform.localPosition = GotoVec3;
+			{vCamera.transform.localPosition = GotoVec3*vTmp;
 			vCamera.transform.eulerAngles = vCamAngle;
-			Debug.Log ("Cam Fixed");
 				//Vector3.lerp (vCamera.transform.localPosition, new Vector3 (3f, 3f, 3f));
 			
 		}
-
 	}
+
 	void FunInputCheck(){
 		// Reseting Variables
 		vHoz = 0;
@@ -99,24 +118,39 @@ public class Scr_Player : MonoBehaviour {
 		// Checking for buttons
 		if (vLocked || vActing)
 			return;
-		
-		if (Input.GetKey (KLeft) || Input.GetKey (JLeft))
+
+		if (Input.GetKey (KeyCode.Space))
+			transform.position = new Vector3(2f,1f,2f);
+		if (Input.GetKey (KLeft) || Input.GetKey (JLeft)) {
 			vHoz -= 1;
-		if (Input.GetKey(KRight) || Input.GetKey(JRight))
-			vHoz += 1;
-		if (Input.GetKey (KDown) || Input.GetKey (JDown))
+
+
 			vVer -= 1;
-		if (Input.GetKey(KUp) || Input.GetKey(JUp))
+		}
+		if (Input.GetKey (KRight) || Input.GetKey (JRight)) {
+			vHoz += 1;
+
+
+			vVer += 1;
+		}
+		if (Input.GetKey (KDown) || Input.GetKey (JDown)) {
+			vVer -= 1;
+
+			vHoz += 1;
+		}
+		if (Input.GetKey (KUp) || Input.GetKey (JUp)) {
 			vVer += 1;
 
-		if (Input.GetKey (KShovel) || Input.GetKey (JShovel))
-			//Nothing yet
-		if (Input.GetKey (KSniff) || Input.GetKey (JSniff))
-			//Nothing yet
-		if (Input.GetKey (KBark) || Input.GetKey (JBark))
-			//Nothing yet
-		if (Input.GetKey (KAction) || Input.GetKey (JAction))
-			//Nothing yet
+			vHoz -= 1;
+		}
+		vDirection = new Vector3 (vHoz, 0f, vVer);
+		
+		if (Input.GetKey (KShovel) || Input.GetKey (JShovel)) {
+		}
+		if (Input.GetKey (KSniff) || Input.GetKey (JSniff)){}
+		if (Input.GetKey (KBark) || Input.GetKey (JBark)){}
+		if (Input.GetKey (KAction) || Input.GetKey (JAction)) {
+		}
 
 		if (Input.GetKeyDown (KCamRotationL) || Input.GetKeyDown (JCamRotationL)) {
 			Debug.Log ("Switch Left");
@@ -151,6 +185,27 @@ public class Scr_Player : MonoBehaviour {
 				vAngNESW = 'S';
 				break;
 			}
+		}
+		DirConvertToCam ();
+	}
+	void DirConvertToCam(){
+		switch (vAngNESW) {
+		case 'N':
+			vDirection = new Vector3 (vVer*-1,0f,vHoz);
+			break;
+		case 'E':
+			vDirection = new Vector3 (vHoz, 0f, vVer);
+			break;
+		case 'S':
+			vDirection = new Vector3 (vVer, 0f,vHoz*-1 );
+			break;
+		case 'W':
+			vDirection = new Vector3 (vHoz*-1, 0f, vVer*-1);
+			break;
+		}
+		if (vDirection.magnitude > 0f) {
+			if (aBounceFrame <= 0f)
+				aBounceFrame += .001f;
 		}
 	}
 }
