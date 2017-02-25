@@ -36,15 +36,6 @@ public class RandMove : MonoBehaviour {
 		if(timeCounter < WalkingTime){
 			controller.Move (target * speed * Time.deltaTime);
 		}
-		//if (Physics.Raycast (this.transform.position, target, 2.5f)) {
-		//	ChangeDir = true;
-		//}
-		//Debug.DrawRay(this.transform.position,target*2.5f);
-
-	}
-	void OnCollisionEnter(Collision collision) {
-		ChangeDir = true;
-		Debug.Log ("collision");
 	}
 	void OnControllerColliderHit(ControllerColliderHit hit){
 		ChangeDir = true;
@@ -52,8 +43,13 @@ public class RandMove : MonoBehaviour {
 	}
 	void SetPoint(){
 		Vector3 tempPoint = Random.insideUnitCircle;
+		Vector3 transPoint = Vector3.zero;
+		transPoint.x = tempPoint.x;
+		transPoint.z = tempPoint.y;
+		this.transform.Rotate (0f,Vector3.Angle (target, transPoint),0f);
 		target.x = tempPoint.x;
 		target.z = tempPoint.y;
 		target = target.normalized;
+
 	}
 }
