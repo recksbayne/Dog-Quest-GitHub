@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandMove : MonoBehaviour {
+public class RandomMovement : MonoBehaviour {
 
 	public float speed;
 	public float maxPathLegth;
