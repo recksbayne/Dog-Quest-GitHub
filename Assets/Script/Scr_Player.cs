@@ -30,9 +30,13 @@ public class Scr_Player : MonoBehaviour {
 	// Status Check
 	public string vState; // 'State Machine'
 	public string vSubState; // I may need this for other info
-	public AnimationCurve aBounce;
+	public AnimationCurve aBounce; // Bounce effect
 	public float aBounceFrame;
+	public AnimationCurve aDigUnder; // Underground effect
+	public float aDigUnderFrame;
 	private bool vLocked = false; // Is Locked
+	public bool vUnderground = false; // Is Locked
+	public bool vIsOnSand = false; // Check if is on sand
 	private bool vAttack = false; // Is Attacking
 	public float vAttackCD; // Attack CoolDown
 	private bool vDigging = false; // Is digging
@@ -85,6 +89,7 @@ public class Scr_Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		
 		if (vAtkHere) {
 			vAtkTime += Time.deltaTime;
 			if (vAtkTime >= vAtkLS) {
@@ -113,17 +118,30 @@ public class Scr_Player : MonoBehaviour {
 			transform.position = new Vector3 (transform.position.x,1f,transform.position.z);
 		Vector3 tTmp = new Vector3 (0f, -1f, 0f);
 		cc.Move (tTmp);
+		if (!vIsOnSand)
+			vUnderground = false;
 	}
 	// Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup 
 	void FunModelFix(){
-		if (aBounceFrame > 0f)
-			aBounceFrame += .05f;
-		if (aBounceFrame > 1f)
+		float tTmp = 0f;
+		if (vUnderground) {
 			aBounceFrame = 0f;
-		float tTmp = aBounce.Evaluate (aBounceFrame)/4f;
+			if (aDigUnderFrame < 1f)
+				aDigUnderFrame += .025f;
+			else
+				aDigUnderFrame = 1f;
+			if (aDigUnderFrame > 1f)
+				aDigUnderFrame = 1f;
+			tTmp = -1 * aDigUnder.Evaluate (aDigUnderFrame)*2/3;// / 4f;
+		} else {
+			aDigUnderFrame = 0f;
+			if (aBounceFrame > 0f)
+				aBounceFrame += .05f;
+			if (aBounceFrame > 1f)
+				aBounceFrame = 0f;
+			tTmp = aBounce.Evaluate (aBounceFrame) / 4f;
+		}
 		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
-		//vModel.transform.localPosition = new Vector3(0f,aBounce.Evaluate (aBounceFrame),0f);
-		//aBounceFrame = aBounce.Evaluate (aBounceFrame);
 
 	}
 	// Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation 
@@ -164,11 +182,8 @@ public class Scr_Player : MonoBehaviour {
 	}
 	// Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input // Input 
 	void FunInputCheck(){
-		// Reseting Variables
 		vHoz = 0;
 		vVer = 0;
-
-		// Checking for buttons
 		if (vLocked || vActing)
 			return;
 
@@ -176,26 +191,26 @@ public class Scr_Player : MonoBehaviour {
 			transform.position = new Vector3(2f,1f,2f);
 		if (Input.GetKey (KLeft) || Input.GetKey (JLeft)) {
 			vHoz -= 1;
-
-
 			vVer -= 1;
 		}
 		if (Input.GetKey (KRight) || Input.GetKey (JRight)) {
 			vHoz += 1;
-
-
 			vVer += 1;
 		}
 		if (Input.GetKey (KDown) || Input.GetKey (JDown)) {
 			vVer -= 1;
-
 			vHoz += 1;
 		}
 		if (Input.GetKey (KUp) || Input.GetKey (JUp)) {
 			vVer += 1;
-
 			vHoz -= 1;
 		}
+
+		if (vHoz > 1) vHoz = 1;
+		if (vVer > 1) vVer = 1;
+		if (vHoz < -1) vHoz = -1;
+		if (vVer < -1) vVer = -1;
+
 		vDirection = new Vector3 (vHoz, 0f, vVer);
 		DirConvertToCam ();
 		if (vDirection.magnitude > 0f)  {
@@ -205,8 +220,8 @@ public class Scr_Player : MonoBehaviour {
 		}
 
 		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel)) && !vAtkHere && vHasAtk) {
-			if (vTakenObj != null && vObjIsHere)
-				Destroy (vTakenObj);
+			if (vIsOnSand)
+				vUnderground = true;
 			vAtkTime = 0f;
 			vAtkHere = true;
 			vAtkBox.SetActive(true);
@@ -279,19 +294,31 @@ public class Scr_Player : MonoBehaviour {
 		}
 	}
 	// Trigger // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger 
-	void OnTriggerStay(Collider Other){
+
+	void OnTriggerEnter(Collider Other){
 		switch (Other.tag) {
-		case "SandSpot":
-			vObjIsHere = true;
-			if (Other.transform.parent != null)
-				vTakenObj = Other.transform.parent.gameObject;
+		case "DigSpot":
+			if (vUnderground)
+				Other.SendMessage ("FoundYou");
 			break;
 		}
+	}
+	void OnTriggerStay(Collider Other){
+		switch (Other.tag) {
+			case "SandSpot":
+				vIsOnSand = true;
+				break;
+			case "DigSpot":
+				if (vUnderground)
+				Other.SendMessage ("FoundYou");
+				break;
+			}
+
 	}
 	void OnTriggerExit(Collider Other){
 		switch (Other.tag) {
 		case "SandSpot":
-			vObjIsHere = false;
+			vIsOnSand = false;
 			break;
 		}
 	}

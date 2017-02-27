@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scr_Hitbox : MonoBehaviour {
-
+public class Scr_Door : MonoBehaviour {
+	public string vNextRoom;
+	public bool vLocked;
+	public string vKeyCode;
 	// Use this for initialization
 	void Start () {
 		
@@ -13,12 +15,10 @@ public class Scr_Hitbox : MonoBehaviour {
 	void Update () {
 		
 	}
-	void OnTriggerEnter (Collider Other){
-		switch (Other.tag) {
-		case "TreasureBox":
-			Other.SendMessage ("GetHit");
-			break;
-
+	void GetHit() {
+		if (vLocked) {
+		} else {
+			// GotoNextRoom
 		}
 	}
 }
