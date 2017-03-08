@@ -6,6 +6,7 @@ public class testingBark : MonoBehaviour {
 
 	public bool Barking;
 	public GameObject[] Enemies;
+	public static float barkRadius = 5f;
 	// Use this for initialization
 	void Start () {
 		Enemies = GameObject.FindGameObjectsWithTag ("Enemy");
