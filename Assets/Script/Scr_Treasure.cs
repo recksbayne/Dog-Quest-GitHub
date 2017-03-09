@@ -9,7 +9,6 @@ public class Scr_Treasure : MonoBehaviour {
 	public GameObject vItem;
 	public bool vWiggle;
 	public AnimationCurve vStretchA;
-	public AnimationCurve vStretchB;
 	public float vFrame;
 	// Use this for initialization
 	void Start () {
@@ -25,7 +24,7 @@ public class Scr_Treasure : MonoBehaviour {
 	void Update () {
 		float tTmp = 0f;
 		if (vWiggle) {
-			vFrame += 0.02f;
+			vFrame += 0.025f;
 			tTmp = vStretchA.Evaluate (vFrame) / 2f;
 			if (vFrame >= .7f && !vOpened)
 				{GameObject tObj;

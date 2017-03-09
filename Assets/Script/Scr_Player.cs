@@ -40,7 +40,7 @@ public class Scr_Player : MonoBehaviour {
 	private bool vAttack = false; // Is Attacking
 	public float vAttackCD; // Attack CoolDown
 	private bool vDigging = false; // Is digging
-	private bool vActing = false; // Is Acting
+	public bool vActing = false; // Is Acting
 
 	// Variables
 	public Vector3 vDirection;
@@ -56,10 +56,12 @@ public class Scr_Player : MonoBehaviour {
 
 	// Model Variable
 	public GameObject vModel;
+	public string vActionType; // An action to use
 
 	// Compenents and Objects
 	public GameObject vCamera;
 	private CharacterController cc;
+	public GameObject vCanvas;
 
 	// Attack Parts
 	public bool vHasAtk; // Does it have the shovel? Y/N
@@ -78,7 +80,9 @@ public class Scr_Player : MonoBehaviour {
 	public float vBarkCD; // Bark Cool Down
 
 
-
+	void Awake(){
+		DontDestroyOnLoad (this.transform.gameObject);
+	}
 	// Use this for initialization
 	void Start () {
 		cc = GetComponent<CharacterController> ();
@@ -86,10 +90,10 @@ public class Scr_Player : MonoBehaviour {
 		vBarkShpere.SetActive (false);
 		SetNESW (vAngNESW);
 	}
-
+	void Respawn(){
+	}
 	// Update is called once per frame
 	void Update () {
-		
 		if (vAtkHere) {
 			vAtkTime += Time.deltaTime;
 			if (vAtkTime >= vAtkLS) {
@@ -108,38 +112,66 @@ public class Scr_Player : MonoBehaviour {
 			vBarkCD -= Time.deltaTime;
 		FunInputCheck ();
 		cc.Move (vDirection * Time.deltaTime * vSpeed);
+		if (transform.position.y <= -5f)
+			transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
 			
 	}
 	// Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes
 	void LateUpdate(){
 		FunCameraFix ();
 		FunModelFix ();
-		if (transform.position.y > 1f)
-			transform.position = new Vector3 (transform.position.x,1f,transform.position.z);
+		//if (transform.position.y > 1f)
+		//	transform.position = new Vector3 (transform.position.x,1f,transform.position.z);
 		Vector3 tTmp = new Vector3 (0f, -1f, 0f);
 		cc.Move (tTmp);
-		if (!vIsOnSand)
+		if (!vIsOnSand && vUnderground) {
 			vUnderground = false;
+			vActing = true;
+			vActionType = "Raise";
+		}
 	}
 	// Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup 
 	void FunModelFix(){
 		float tTmp = 0f;
-		if (vUnderground) {
+		switch (vActionType) {
+		case "Dig":
 			aBounceFrame = 0f;
 			if (aDigUnderFrame < 1f)
 				aDigUnderFrame += .025f;
-			else
+			else {
 				aDigUnderFrame = 1f;
-			if (aDigUnderFrame > 1f)
-				aDigUnderFrame = 1f;
-			tTmp = -1 * aDigUnder.Evaluate (aDigUnderFrame)*2/3;// / 4f;
-		} else {
-			aDigUnderFrame = 0f;
-			if (aBounceFrame > 0f)
-				aBounceFrame += .05f;
-			if (aBounceFrame > 1f)
-				aBounceFrame = 0f;
-			tTmp = aBounce.Evaluate (aBounceFrame) / 4f;
+				vActing = false;
+				vActionType = "Under";
+			}
+			tTmp = -1 * aDigUnder.Evaluate (aDigUnderFrame) * 2f / 3f;// / 4f;
+			break;
+		case "Under":
+			tTmp = -1 * aDigUnder.Evaluate (2f / 3f);// / 4f;
+			break;
+		case "Raise":
+			aBounceFrame = 0f;
+			if (aDigUnderFrame > 0f){
+				aDigUnderFrame -= .05f;
+			vActing = true;
+		}
+			else{
+				aDigUnderFrame = 0f;
+				vActing = false;
+				vActionType = "";
+			}
+			tTmp = -1 * aDigUnder.Evaluate (aDigUnderFrame) * 2f / 3f;// / 4f;
+
+			break;
+		default:
+			if (!vUnderground) {
+				aDigUnderFrame = 0f;
+				if (aBounceFrame > 0f)
+					aBounceFrame += .05f;
+				if (aBounceFrame > 1f)
+					aBounceFrame = 0f;
+				tTmp = aBounce.Evaluate (aBounceFrame) / 4f;
+			}
+			break;
 		}
 		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
 
@@ -150,20 +182,20 @@ public class Scr_Player : MonoBehaviour {
 		Vector3 vCamAngle = new Vector3 (15f, -135f, 0f);
 		switch (vAngNESW) {
 		case 'N':
-			GotoVec3 = new Vector3(3f,5f,3f);
-			vCamAngle = new Vector3 (45f, -135f, 0f);
+			GotoVec3 = new Vector3(6f,6f,6f);
+			vCamAngle = new Vector3 (30f, -135f, 0f);
 			break;
 		case 'E':
-			GotoVec3 = new Vector3(3f,5f,-3f);
-			vCamAngle = new Vector3 (45f, -45f, 0f);
+			GotoVec3 = new Vector3(6f,6f,-6f);
+			vCamAngle = new Vector3 (30f, -45f, 0f);
 			break;
 		case 'S':
-			GotoVec3 = new Vector3(-3f,5f,-3f);
-			vCamAngle = new Vector3 (45f, 45f, 0f);
+			GotoVec3 = new Vector3(-6f,6f,-6f);
+			vCamAngle = new Vector3 (30f, 45f, 0f);
 			break;
 		case 'W':
-			GotoVec3 = new Vector3(-3f,5f,3f);
-			vCamAngle = new Vector3 (45f, 135f, 0f);
+			GotoVec3 = new Vector3(-6f,6f,6f);
+			vCamAngle = new Vector3 (30f, 135f, 0f);
 			break;
 		}
 		if (vCamera.transform.localPosition != GotoVec3*vTmp)
@@ -184,8 +216,11 @@ public class Scr_Player : MonoBehaviour {
 	void FunInputCheck(){
 		vHoz = 0;
 		vVer = 0;
-		if (vLocked || vActing)
+		if (vLocked || vActing) {
+			vDirection = new Vector3 (vHoz, 0f, vVer);
+			DirConvertToCam ();
 			return;
+		}
 
 		if (Input.GetKey (KeyCode.Space))
 			transform.position = new Vector3(2f,1f,2f);
@@ -220,11 +255,15 @@ public class Scr_Player : MonoBehaviour {
 		}
 
 		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel)) && !vAtkHere && vHasAtk) {
-			if (vIsOnSand)
+			if (vIsOnSand) {
 				vUnderground = true;
-			vAtkTime = 0f;
-			vAtkHere = true;
-			vAtkBox.SetActive(true);
+				vActing = true;
+				vActionType = "Dig";
+			} else {
+				vAtkTime = 0f;
+				vAtkHere = true;
+				vAtkBox.SetActive (true);
+			}
 		}
 		if (Input.GetKey (KSniff) || Input.GetKey (JSniff)){}
 		if ((Input.GetKey (KBark) || Input.GetKey (JBark)) && vBarkCD <= 0f){
@@ -295,21 +334,14 @@ public class Scr_Player : MonoBehaviour {
 	}
 	// Trigger // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger 
 
-	void OnTriggerEnter(Collider Other){
-		switch (Other.tag) {
-		case "DigSpot":
-			if (vUnderground)
-				Other.SendMessage ("FoundYou");
-			break;
-		}
-	}
+
 	void OnTriggerStay(Collider Other){
 		switch (Other.tag) {
 			case "SandSpot":
 				vIsOnSand = true;
 				break;
 			case "DigSpot":
-				if (vUnderground)
+			if (vActionType == "Under")
 				Other.SendMessage ("FoundYou");
 				break;
 			}
@@ -322,4 +354,6 @@ public class Scr_Player : MonoBehaviour {
 			break;
 		}
 	}
+	// Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room 
+
 }
