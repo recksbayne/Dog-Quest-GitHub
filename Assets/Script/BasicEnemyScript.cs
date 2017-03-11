@@ -9,6 +9,8 @@ public class BasicEnemyScript : MonoBehaviour {
 
 	//Native Atributes
 	public float speed;
+	public float normalSpeed;
+	public float scareSpeed;
 	public Vector3 Direction;
 	public CharacterController cc;
 	public string currentState;
@@ -181,6 +183,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		currentState = "isWalking";
 	}
 	void Walk(){
+		speed = normalSpeed;
 		rotation = Quaternion.LookRotation(Direction);
 		cc.Move(Direction * speed * Time.deltaTime); // Will move only at walk 8===D
 		if (aBounceFrame <= 0f) // 8===D
@@ -212,6 +215,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		currentState = "isGettingFear";
 	}
 	void GetFear(){
+		speed = scareSpeed;
 		ScapeDog ();
 		rotation = Quaternion.LookRotation(Direction);
 		cc.Move(Direction * speed * Time.deltaTime); // Walk while fear 8===D

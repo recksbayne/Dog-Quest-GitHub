@@ -282,7 +282,7 @@ public class Scr_Player : MonoBehaviour {
 			vBarkCD = 3f;
 			vBarkShpere.SetActive(true);
 
-			GameObject[] Enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+			GameObject[] Enemies = GameObject.FindGameObjectsWithTag ("Cat");
 			for (int i = 0; i < Enemies.Length; i++) {
 				Enemies[i].gameObject.SendMessage ("DogBarking");
 			}
