@@ -80,12 +80,16 @@ public class BasicEnemyScript : MonoBehaviour {
 
 		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
 	}
+
+	void LateUpdate(){
+		transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
+	}
 	void OnTriggerEnter(Collider impactObject){
 		if (impactObject.name == "DogWeapon" && currentState != "isGettingHit") {
 			StartGetHit ();
 		}
-		if (impactObject.name == "Obj_Bark") // 8===D
-		StartGetFear ();
+		//if (impactObject.name == "Obj_Bark") // 8===D
+		//StartGetFear ();
 	}
 
 	void RunStates(){
@@ -152,7 +156,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	//Atthack States
 	void StartAttack(){
 		currentState = "isAttacking";
-		Debug.Log ("Attack Started");
+		Debug.Log ("Attack Started");  // 8===D
 		if (!vAtkHere)
 		{
 			Debug.Log ("Attacked");
@@ -163,7 +167,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		//activate weapon collider
 	}
 	void Attack(){
-		//animation condition
+		//animation condition 8===D
 		if (!vAtkHere)
 			StopAttack();
 	}

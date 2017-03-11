@@ -53,6 +53,8 @@ public class Scr_Player : MonoBehaviour {
 	private int vVer;
 	public GameObject vTakenObj; // Object Taken from another variable
 	public bool vObjIsHere; // Object is still on trigger zone
+	public Vector3 vVectorPrevious; // xprevious, yprevious, zprevious;
+
 
 	// Model Variable
 	public GameObject vModel;
@@ -62,6 +64,7 @@ public class Scr_Player : MonoBehaviour {
 	public GameObject vCamera;
 	private CharacterController cc;
 	public GameObject vCanvas;
+	public Scr_Health cHc;
 
 	// Attack Parts
 	public bool vHasAtk; // Does it have the shovel? Y/N
@@ -80,12 +83,14 @@ public class Scr_Player : MonoBehaviour {
 	public float vBarkCD; // Bark Cool Down
 
 
+
 	void Awake(){
 		DontDestroyOnLoad (this.transform.gameObject);
 	}
 	// Use this for initialization
 	void Start () {
 		cc = GetComponent<CharacterController> ();
+		cHc = GetComponent < Scr_Health> ();
 		vAtkBox.SetActive (false);
 		vBarkShpere.SetActive (false);
 		SetNESW (vAngNESW);
@@ -94,6 +99,7 @@ public class Scr_Player : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+		vVectorPrevious = transform.position;
 		if (vAtkHere) {
 			vAtkTime += Time.deltaTime;
 			if (vAtkTime >= vAtkLS) {
@@ -120,6 +126,7 @@ public class Scr_Player : MonoBehaviour {
 	void LateUpdate(){
 		FunCameraFix ();
 		FunModelFix ();
+		transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
 		//if (transform.position.y > 1f)
 		//	transform.position = new Vector3 (transform.position.x,1f,transform.position.z);
 		Vector3 tTmp = new Vector3 (0f, -1f, 0f);
@@ -129,6 +136,7 @@ public class Scr_Player : MonoBehaviour {
 			vActing = true;
 			vActionType = "Raise";
 		}
+
 	}
 	// Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup // Model Setup 
 	void FunModelFix(){
@@ -266,11 +274,18 @@ public class Scr_Player : MonoBehaviour {
 			}
 		}
 		if (Input.GetKey (KSniff) || Input.GetKey (JSniff)){}
+
+
 		if ((Input.GetKey (KBark) || Input.GetKey (JBark)) && vBarkCD <= 0f){
 			vBarkTime = 0f;
 			vBarkHere = true;
 			vBarkCD = 3f;
 			vBarkShpere.SetActive(true);
+
+			GameObject[] Enemies = GameObject.FindGameObjectsWithTag ("Enemy");
+			for (int i = 0; i < Enemies.Length; i++) {
+				Enemies[i].gameObject.SendMessage ("DogBarking");
+			}
 		}
 		if (Input.GetKey (KAction) || Input.GetKey (JAction)) {
 		}
@@ -344,7 +359,15 @@ public class Scr_Player : MonoBehaviour {
 			if (vActionType == "Under")
 				Other.SendMessage ("FoundYou");
 				break;
+		case "Spikes":
+			//transform.position = vVectorPrevious;
+			Vector3 tDirection = Other.transform.position - transform.position;
+			cc.Move (tDirection.normalized*-1f);
+			cHc.SendMessage ("GetDamaged");
+			Debug.Log ("I Stepped on it");
+			break;
 			}
+			
 
 	}
 	void OnTriggerExit(Collider Other){

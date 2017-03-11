@@ -21,6 +21,10 @@ public class Scr_Hitbox : MonoBehaviour {
 		case "Door":
 			Other.SendMessage ("GetHit");
 			break;
+		case "Switch":
+			Debug.Log("I touched the Switch");
+			Other.SendMessage ("GetHit");
+			break;
 
 		}
 	}

@@ -79,7 +79,7 @@ public class Scr_Canvas : MonoBehaviour {
 		foreach (GameObject That in Those) {
 			vPlayerComp = That.GetComponent<Scr_Player> ();
 			vPlayerComp.vActing = TF;}
-		Those = GameObject.FindGameObjectsWithTag ("Enemy");
+		Those = GameObject.FindGameObjectsWithTag ("Player");
 		foreach (GameObject That in Those) {
 			vPlayerComp = That.GetComponent<Scr_Player> ();
 			vPlayerComp.vActing = TF;
