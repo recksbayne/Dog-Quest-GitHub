@@ -24,6 +24,8 @@ public class BasicEnemyScript : MonoBehaviour {
 	public int EnemyCode;// 1 for club-cat 2 for spear cat 3 for possible boss
 	public float ScareCooldown;//if the scare has a cooldown
 	public float timeScared;//time the cat is beaing in getbark state
+	public Vector3 OrbLocation;//locate the orb
+	public Vector3 OrbDirection; //Orb direction
 
 	// Attack  8===D
 	public GameObject vAtkBox;
@@ -50,6 +52,8 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+		GameObject CurrentOrb = GameObject.FindGameObjectWithTag ("Orb");
+		OrbLocation = CurrentOrb.gameObject.transform.position;
 	}
 
 	// Update is called once per frame
@@ -95,7 +99,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 
 	void RunStates(){
-		if (DogDistance > ScareRadius && EnemyCode == 1 && currentState == "isGettingFear") {
+		if (currentState == "isInsideOrb") {
+			Orb ();
+		}
+		else if (DogDistance > ScareRadius && EnemyCode == 1 && currentState == "isGettingFear") {
 			startGetScare ();
 		}
 		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
@@ -117,6 +124,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		case "isAttacking":  		Attack (); 		break;
 		case "isWalking":  			Walk (); 		break;
 		case "isIdling":  			Idle (); 		break;
+		case "isInsideOrb":			Orb ();			break;
 		}
 		/*
 		if (currentState == "isGettingFear")
@@ -233,7 +241,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	//Club cat Scared Mode
 	void startGetScare(){
-		Debug.Log ("enter");
 		ResetStates ();
 		currentState = "isGettingScared";
 	}
@@ -244,6 +251,18 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void StopGetScare(){
 		currentState = "none";
+	}
+
+	// Club Cat Orb mode
+	void StartOrb(){
+		ResetStates ();
+		currentState = "isInsideOrb";
+	}
+	void Orb(){
+		OrbDirection = OrbLocation - transform.position;
+		rotation = Quaternion.LookRotation(OrbDirection);
+		Direction = Vector3.zero;
+		Debug.Log ("enter");
 	}
 
 	void GetDogDistance(){
@@ -261,6 +280,11 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void ScapeDog(){
 		Direction *= -1;
+	}
+	void EnteringOrb(){
+		if (EnemyCode == 1) {
+			StartOrb ();
+		}
 	}
 }
 
