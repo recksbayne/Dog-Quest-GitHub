@@ -37,10 +37,19 @@ public class Scr_Door : MonoBehaviour {
 		}
 		this.transform.localScale = new Vector3(1f+tTmp*1.25f,1f-tTmp*1.25f,1f+tTmp*1.25f);
 	}
+
 	void GetHit() {
 		if (!vWiggle) {
 			vWiggle = true;
 		}
+
+	}
+
+	void OnTriggerEnter(Collider Other){
+		if (Other.tag == "Player")
+			if (!vWiggle) {
+				vWiggle = true;
+			}
 
 	}
 }

@@ -55,6 +55,15 @@ public class Scr_Player : MonoBehaviour {
 	public bool vObjIsHere; // Object is still on trigger zone
 	public Vector3 vVectorPrevious; // xprevious, yprevious, zprevious;
 
+	// Camera Angler
+	private bool vCamIsMoving;
+	public float vCamTime;
+	private Vector3 vPointFrom;
+	private Vector3 vPointTo;
+	private Vector3 vAngleFrom;
+	private Vector3 vAngleTo;
+	public Vector3 TempVectorA;
+	public Vector3 TempVectorB;
 
 	// Model Variable
 	public GameObject vModel;
@@ -94,9 +103,15 @@ public class Scr_Player : MonoBehaviour {
 		vAtkBox.SetActive (false);
 		vBarkShpere.SetActive (false);
 		SetNESW (vAngNESW);
+		vPointFrom = new Vector3 (6f, 6f, 6f);
+		vAngleFrom = new Vector3 (30f, -135f, 0f);
+		vCamera.transform.localPosition = new Vector3(6f,6f,6f);
+		vCamera.transform.eulerAngles = new Vector3 (30f, -135f, 0f);
 	}
+
 	void Respawn(){
 	}
+
 	// Update is called once per frame
 	void Update () {
 		vVectorPrevious = transform.position;
@@ -117,13 +132,15 @@ public class Scr_Player : MonoBehaviour {
 		if (vBarkCD >= 0f)
 			vBarkCD -= Time.deltaTime;
 		FunInputCheck ();
+		if (vDirection.magnitude > 0f)
 		cc.Move (vDirection * Time.deltaTime * vSpeed);
 		if (transform.position.y <= -5f)
 			transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
-			
+
 	}
 	// Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes
 	void LateUpdate(){
+		if (vCamIsMoving)
 		FunCameraFix ();
 		FunModelFix ();
 		transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
@@ -181,34 +198,52 @@ public class Scr_Player : MonoBehaviour {
 			}
 			break;
 		}
+		Vector3 Temp = new Vector3 (vDirection.x,tTmp,vDirection.z);
+		Temp = transform.position - vDirection;
+		if (vDirection.magnitude > 0f)
+			vModel.transform.LookAt(transform.position-vDirection);
 		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
 
 	}
 	// Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation 
-	void FunCameraFix(){ 
-		Vector3 GotoVec3 = new Vector3(0f,0f,0f);
-		Vector3 vCamAngle = new Vector3 (15f, -135f, 0f);
+	void FunCamNESW(){
 		switch (vAngNESW) {
 		case 'N':
-			GotoVec3 = new Vector3(6f,6f,6f);
-			vCamAngle = new Vector3 (30f, -135f, 0f);
+			vPointTo = new Vector3(6f,6f,6f);
+			vAngleTo = new Vector3 (30f, -135f, 0f);
+			if (vAngleFrom.y == 135f)
+				vAngleFrom.y = -360f + 135f;
 			break;
 		case 'E':
-			GotoVec3 = new Vector3(6f,6f,-6f);
-			vCamAngle = new Vector3 (30f, -45f, 0f);
+			vPointTo = new Vector3(6f,6f,-6f);
+			vAngleTo = new Vector3 (30f, -45f, 0f);
 			break;
 		case 'S':
-			GotoVec3 = new Vector3(-6f,6f,-6f);
-			vCamAngle = new Vector3 (30f, 45f, 0f);
+			vPointTo = new Vector3(-6f,6f,-6f);
+			vAngleTo = new Vector3 (30f, 45f, 0f);
 			break;
 		case 'W':
-			GotoVec3 = new Vector3(-6f,6f,6f);
-			vCamAngle = new Vector3 (30f, 135f, 0f);
+			vPointTo = new Vector3 (-6f, 6f, 6f);
+			vAngleTo = new Vector3 (30f, 135f, 0f);
+			if (vAngleFrom.y == -135f)
+				vAngleFrom.y = 360f - 135f;
 			break;
 		}
-		if (vCamera.transform.localPosition != GotoVec3*vTmp)
-			{vCamera.transform.localPosition = GotoVec3*vTmp;
-			vCamera.transform.eulerAngles = vCamAngle;
+	}
+
+	void FunCameraFix(){ 
+		vCamTime += 0.02f;
+		if (vCamTime >= 1f) {
+			vCamTime = 1f;
+			vCamIsMoving = false;
+			vPointFrom = vPointTo;
+			vAngleFrom = vAngleTo;
+		}
+		TempVectorA = Vector3.Lerp (vPointFrom, vPointTo, vCamTime);
+		TempVectorB = Vector3.Lerp (vAngleFrom, vAngleTo, vCamTime);
+		if (vCamera.transform.localPosition != TempVectorA*vTmp)
+			{vCamera.transform.localPosition = TempVectorA*vTmp;
+			vCamera.transform.eulerAngles = TempVectorB;
 			SetNESW (vAngNESW);
 		}
 	}
@@ -256,6 +291,7 @@ public class Scr_Player : MonoBehaviour {
 
 		vDirection = new Vector3 (vHoz, 0f, vVer);
 		DirConvertToCam ();
+
 		if (vDirection.magnitude > 0f)  {
 			vAtkSpot = vDirection;
 			if (!vAtkHere)
@@ -290,7 +326,9 @@ public class Scr_Player : MonoBehaviour {
 		if (Input.GetKey (KAction) || Input.GetKey (JAction)) {
 		}
 
-		if (Input.GetKeyDown (KCamRotationL) || Input.GetKeyDown (JCamRotationL)) {
+		if ((Input.GetKeyDown (KCamRotationL) || Input.GetKeyDown (JCamRotationL)) && !vCamIsMoving) {
+			vCamIsMoving = true;
+			vCamTime = 0f;
 			Debug.Log ("Switch Left");
 			switch (vAngNESW) {
 			case 'N':
@@ -306,8 +344,12 @@ public class Scr_Player : MonoBehaviour {
 				vAngNESW = 'N';
 				break;
 			}
+			FunCamNESW ();
 		}
-		if (Input.GetKeyDown (KCamRotationR) || Input.GetKeyDown (JCamRotationR)) {
+		if ((Input.GetKeyDown (KCamRotationR) || Input.GetKeyDown (JCamRotationR)) && !vCamIsMoving) {
+			vCamIsMoving = true;
+			vCamIsMoving = true;
+			vCamTime = 0f;
 			Debug.Log ("Switch Right");
 			switch (vAngNESW) {
 			case 'N':
@@ -323,6 +365,7 @@ public class Scr_Player : MonoBehaviour {
 				vAngNESW = 'S';
 				break;
 			}
+			FunCamNESW ();
 		}
 	}
 	// Direction to camera direction converter // Direction to camera direction converter // Direction to camera direction converter // Direction to camera direction converter // Direction to camera direction converter 

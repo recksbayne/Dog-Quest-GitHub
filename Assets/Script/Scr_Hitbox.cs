@@ -18,9 +18,9 @@ public class Scr_Hitbox : MonoBehaviour {
 		case "TreasureBox":
 			Other.SendMessage ("GetHit");
 			break;
-		case "Door":
-			Other.SendMessage ("GetHit");
-			break;
+		//case "Door":
+		//	Other.SendMessage ("GetHit");
+		//	break;
 		case "Switch":
 			Debug.Log("I touched the Switch");
 			Other.SendMessage ("GetHit");

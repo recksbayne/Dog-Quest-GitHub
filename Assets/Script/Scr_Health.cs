@@ -27,10 +27,31 @@ public class Scr_Health : MonoBehaviour {
 		} else {vCount += 1;
 			vTimer = .1f;
 			if (vOn) {
-				vModel.GetComponent<MeshRenderer> ().enabled = false;
+				//vModel.GetComponent<MeshRenderer> ().enabled = false;
+				//vModel.GetComponentInChildren<MeshRenderer> ().enabled = false;
+				foreach (Transform childA in vModel.transform) {
+					childA.GetComponent<MeshRenderer> ().enabled = false;
+					foreach (Transform childB in childA.transform) {
+						childB.GetComponent<MeshRenderer> ().enabled = false;
+						foreach (Transform childC in childB.transform) {
+							childC.GetComponent<MeshRenderer> ().enabled = false;
+						}
+					}
+				}
+				//GameObject[] Those = vModel.GetComponentInChildren
 				vOn = false;
 			} else {
-				vModel.GetComponent<MeshRenderer> ().enabled = true;
+				//vModel.GetComponent<MeshRenderer> ().enabled = true;
+				//vModel.GetComponentInChildren<MeshRenderer> ().enabled = true;
+				foreach (Transform childA in vModel.transform) {
+					childA.GetComponent<MeshRenderer> ().enabled = true;
+					foreach (Transform childB in childA.transform) {
+						childB.GetComponent<MeshRenderer> ().enabled = true;
+						foreach (Transform childC in childB.transform) {
+							childC.GetComponent<MeshRenderer> ().enabled = true;
+						}
+					}
+				}
 				vOn = true;
 			}
 			if (vCount >= 12) {
