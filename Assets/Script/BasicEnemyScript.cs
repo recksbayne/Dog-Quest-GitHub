@@ -262,7 +262,6 @@ public class BasicEnemyScript : MonoBehaviour {
 		OrbDirection = OrbLocation - transform.position;
 		rotation = Quaternion.LookRotation(OrbDirection);
 		Direction = Vector3.zero;
-		Debug.Log ("enter");
 	}
 
 	void GetDogDistance(){
@@ -270,7 +269,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 
 	void DogBarking(){
-		if(DogDistance < barkRadius)
+		if(DogDistance < barkRadius && currentState != "isInsideOrb")
 			StartGetFear ();
 	}
 	void DogDirection(){
