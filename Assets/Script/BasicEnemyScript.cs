@@ -260,6 +260,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void Orb(){
 		OrbDirection = OrbLocation - transform.position;
+		OrbDirection.y = 0.1f;
 		rotation = Quaternion.LookRotation(OrbDirection);
 		Direction = Vector3.zero;
 	}
