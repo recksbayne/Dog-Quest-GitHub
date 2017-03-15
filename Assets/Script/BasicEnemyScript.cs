@@ -52,8 +52,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		GameObject CurrentOrb = GameObject.FindGameObjectWithTag ("Orb");
-		OrbLocation = CurrentOrb.gameObject.transform.position;
 		vMoving = false;
 	}
 
@@ -275,10 +273,23 @@ public class BasicEnemyScript : MonoBehaviour {
 		currentState = "isInsideOrb";
 	}
 	void Orb(){
-		OrbDirection = OrbLocation - transform.position;
-		OrbDirection.y = 0.1f;
-		rotation = Quaternion.LookRotation(OrbDirection);
-		Direction = Vector3.zero;
+		GameObject[] CurrentOrbs = GameObject.FindGameObjectsWithTag("Orb");
+		if (CurrentOrbs.Length > 0) {
+			float orbDistance = 100000f;
+			float tempDistance = 0f;
+			foreach (GameObject nearestOrb in CurrentOrbs)
+			{
+					tempDistance = Vector3.Distance(transform.position,nearestOrb.transform.position);
+				if (orbDistance < tempDistance) {
+					OrbLocation = nearestOrb.gameObject.transform.position;	
+				}
+			}
+					
+			OrbDirection = transform.position - OrbLocation;
+			OrbDirection.y = 0.1f;
+			rotation = Quaternion.LookRotation (OrbDirection);
+			Direction = Vector3.zero;
+		}
 	}
 
 	void GetDogDistance(){
