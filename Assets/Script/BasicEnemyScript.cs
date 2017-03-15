@@ -18,7 +18,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float attackRange; // enemy weapon range
 	public float DogDistance; // distance between the enemy and the dog
 	public float PursuitRange; // min distance to enter in pursuit mode
-	public float ScareRadius; //radius area where the cat will run in the oposite direction of the dog
 	public float barkRadius; // set the radius of the bark
 	public float lifepoints; //if we need them
 	public int EnemyCode;// 1 for club-cat 2 for spear cat 3 for possible boss
@@ -108,7 +107,8 @@ public class BasicEnemyScript : MonoBehaviour {
 		if (currentState == "isInsideOrb") {
 			Orb ();
 		}
-		else if (DogDistance > ScareRadius && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
+		else if (timeScared > ScareCooldown && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
+			timeScared = 0;
 			startGetScare ();
 		}
 		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
