@@ -93,7 +93,11 @@ public class BasicEnemyScript : MonoBehaviour {
 		transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
 	}
 	void OnTriggerEnter(Collider impactObject){
-		if (impactObject.name == "DogWeapon" && currentState != "isGettingHit") {
+		if (impactObject.name == "DogWeapon" && currentState != "isGettingHit" && EnemyCode == 1) {
+			Debug.Log ("collider Working");
+			StartGetHit ();
+		}
+		if (impactObject.name == "DogWeapon" && currentState == "isGettingFear" && EnemyCode == 2) {
 			StartGetHit ();
 		}
 		//if (impactObject.name == "Obj_Bark") // 8===D
@@ -104,7 +108,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		if (currentState == "isInsideOrb") {
 			Orb ();
 		}
-		else if (DogDistance > ScareRadius && EnemyCode == 1 && currentState == "isGettingFear") {
+		else if (DogDistance > ScareRadius && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
 			startGetScare ();
 		}
 		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
@@ -213,7 +217,17 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void GetHit(){
 		//animation condition
+		Debug.Log("is getting hit");
 		StopGetHit();
+		if (EnemyCode == 1) {
+			Destroy (gameObject);
+		}
+		else if (EnemyCode == 1) {
+			lifepoints -= 1;
+			if (lifepoints == 0)
+				Destroy (gameObject);
+		}
+
 	}
 	void StopGetHit(){
 		currentState = "none";
