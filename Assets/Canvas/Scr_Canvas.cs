@@ -21,6 +21,7 @@ public class Scr_Canvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake(){
+		
 		vTransition = true;
 		vScale = 0f;
 		vOpen = true;
@@ -91,7 +92,7 @@ public class Scr_Canvas : MonoBehaviour {
 		vCurtRoom = SceneManager.GetActiveScene ().buildIndex;
 		switch (vNextRoom) {
 		case 0:
-			vPlayer.transform.position = new Vector3 (0f, 2f, -3f);
+			vPlayer.transform.position = new Vector3 (0f, 2f, -1f);
 			break;
 		case 1:
 			if (vCurtRoom == 0)
@@ -110,7 +111,7 @@ public class Scr_Canvas : MonoBehaviour {
 			vPlayer.transform.position = new Vector3 (1f, 2f, -1f);
 			break;
 		case 4:
-			vPlayer.transform.position = new Vector3 (0f, 2f, 8f);
+			vPlayer.transform.position = new Vector3 (0f, 2f, 6f);
 			break;
 		}
 		SceneManager.LoadScene(vNextRoom);

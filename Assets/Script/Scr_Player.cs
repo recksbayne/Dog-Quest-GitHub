@@ -92,9 +92,20 @@ public class Scr_Player : MonoBehaviour {
 	public float vBarkCD; // Bark Cool Down
 
 
-
+	// There can only be one;
+	private bool TheOne;
 	void Awake(){
 		DontDestroyOnLoad (this.transform.gameObject);
+		GameObject[] Those = GameObject.FindGameObjectsWithTag ("Player");
+		int tCount = 0;
+		foreach (GameObject That in Those) {
+			tCount += 1;
+		}
+		Debug.Log (tCount);
+		if (tCount == 1)
+			TheOne = true;
+		else if (!TheOne)
+			Destroy (this.transform.gameObject);
 	}
 	// Use this for initialization
 	void Start () {
@@ -103,9 +114,9 @@ public class Scr_Player : MonoBehaviour {
 		vAtkBox.SetActive (false);
 		vBarkShpere.SetActive (false);
 		SetNESW (vAngNESW);
-		vPointFrom = new Vector3 (6f, 6f, 6f);
+		vPointFrom = new Vector3 (20f,18f,20f);
 		vAngleFrom = new Vector3 (30f, -135f, 0f);
-		vCamera.transform.localPosition = new Vector3(6f,6f,6f);
+		vCamera.transform.localPosition = new Vector3(20f,18f,20f);
 		vCamera.transform.eulerAngles = new Vector3 (30f, -135f, 0f);
 	}
 
@@ -209,21 +220,21 @@ public class Scr_Player : MonoBehaviour {
 	void FunCamNESW(){
 		switch (vAngNESW) {
 		case 'N':
-			vPointTo = new Vector3(6f,6f,6f);
+			vPointTo = new Vector3(20f,18f,20f);
 			vAngleTo = new Vector3 (30f, -135f, 0f);
 			if (vAngleFrom.y == 135f)
 				vAngleFrom.y = -360f + 135f;
 			break;
 		case 'E':
-			vPointTo = new Vector3(6f,6f,-6f);
+			vPointTo = new Vector3(20f,18f,-20f);
 			vAngleTo = new Vector3 (30f, -45f, 0f);
 			break;
 		case 'S':
-			vPointTo = new Vector3(-6f,6f,-6f);
+			vPointTo = new Vector3(-20f,18f,-20f);
 			vAngleTo = new Vector3 (30f, 45f, 0f);
 			break;
 		case 'W':
-			vPointTo = new Vector3 (-6f, 6f, 6f);
+			vPointTo = new Vector3 (-20f, 18f, 20f);
 			vAngleTo = new Vector3 (30f, 135f, 0f);
 			if (vAngleFrom.y == -135f)
 				vAngleFrom.y = 360f - 135f;
