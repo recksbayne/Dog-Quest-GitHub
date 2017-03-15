@@ -26,6 +26,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float timeScared;//time the cat is beaing in getbark state
 	public Vector3 OrbLocation;//locate the orb
 	public Vector3 OrbDirection; //Orb direction
+	public bool vMoving; //bool that is set when camera charges
 
 	// Attack  8===D
 	public GameObject vAtkBox;
@@ -54,6 +55,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void Start () {
 		GameObject CurrentOrb = GameObject.FindGameObjectWithTag ("Orb");
 		OrbLocation = CurrentOrb.gameObject.transform.position;
+		vMoving = false;
 	}
 
 	// Update is called once per frame
@@ -109,7 +111,7 @@ public class BasicEnemyScript : MonoBehaviour {
 			StartAttack ();
 		}
 		//Walk
-		else if (currentState != "isWalking" && currentState != "isGettingHit" && currentState != "isAttacking" && DogDistance > attackRange && currentState != "isGettingFear" && currentState != "isGettingScared") {
+		else if (currentState != "isWalking" && currentState != "isGettingHit" && currentState != "isAttacking" && DogDistance > attackRange && currentState != "isGettingFear" && currentState != "isGettingScared" && vMoving) {
 			StartWalk ();
 		}
 		//Idle
@@ -285,6 +287,9 @@ public class BasicEnemyScript : MonoBehaviour {
 		if (EnemyCode == 1) {
 			StartOrb ();
 		}
+	}
+	void StartMoving(){
+		vMoving = true;
 	}
 }
 
