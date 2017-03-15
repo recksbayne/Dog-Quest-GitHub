@@ -71,6 +71,7 @@ public class Scr_Player : MonoBehaviour {
 
 	// Compenents and Objects
 	public GameObject vCamera;
+	public GameObject vCamLock;
 	private CharacterController cc;
 	public GameObject vCanvas;
 	public Scr_Health cHc;
@@ -253,10 +254,12 @@ public class Scr_Player : MonoBehaviour {
 		TempVectorA = Vector3.Lerp (vPointFrom, vPointTo, vCamTime);
 		TempVectorB = Vector3.Lerp (vAngleFrom, vAngleTo, vCamTime);
 		if (vCamera.transform.localPosition != TempVectorA*vTmp)
-			{vCamera.transform.localPosition = TempVectorA*vTmp;
-			vCamera.transform.eulerAngles = TempVectorB;
+			{//vCamera.transform.localPosition = TempVectorA*vTmp;
+			//vCamera.transform.eulerAngles = TempVectorB;
+			vCamLock.transform.eulerAngles = new Vector3(0f,TempVectorB.y-225f,0f);
 			SetNESW (vAngNESW);
 		}
+		vCamera.transform.LookAt (this.transform);
 	}
 	// Setting NESW visibility for walls // Setting NESW visibility for walls // Setting NESW visibility for walls // Setting NESW visibility for walls // Setting NESW visibility for walls // Setting NESW visibility for walls 
 	void SetNESW(char NESW){
