@@ -157,8 +157,8 @@ public class Scr_Player : MonoBehaviour {
 		if (transform.position.y <= -5f)
 			transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
 		//Animator State Info
-		myAnimatorStateInfo = myAnimator.GetCurrentAnimatorStateInfo(0);
-		myAnimatorNormalizedTime = myAnimatorStateInfo.normalizedTime;
+		//myAnimatorStateInfo = myAnimator.GetCurrentAnimatorStateInfo(0);
+		//myAnimatorNormalizedTime = myAnimatorStateInfo.normalizedTime;
 
 	}
 	// Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes
