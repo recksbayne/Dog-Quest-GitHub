@@ -126,6 +126,7 @@ public class Scr_Player : MonoBehaviour {
 		vAngleFrom = new Vector3 (30f, -135f, 0f);
 		vCamera.transform.localPosition = new Vector3(20f,18f,20f);
 		vCamera.transform.eulerAngles = new Vector3 (30f, -135f, 0f);
+		vCamera.transform.LookAt (this.transform);
 	}
 
 	void Respawn(){
