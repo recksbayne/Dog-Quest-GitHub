@@ -39,12 +39,16 @@ public class BasicEnemyScript : MonoBehaviour {
 	public AnimationCurve aBounce; // Bounce effect
 	public float aBounceFrame;
 
+	//Animations Variables
+	public GameObject catModel;
+	private Animator myAnimator;
 
 	void Awake(){
 		timeScared = 0f;
 		proDog = GameObject.FindGameObjectWithTag ("Player");
 		cc = gameObject.GetComponent<CharacterController> ();
 		barkRadius = testingBark.barkRadius;
+		myAnimator = catModel.gameObject.GetComponent<Animator>();
 		//barkRadius = doggie.barkRadius;
 		transform.position = new Vector3(transform.position.x,1f,transform.position.z); // Height Fix  8===D
 		// Attack  8===D
@@ -154,12 +158,15 @@ public class BasicEnemyScript : MonoBehaviour {
 		StopGetHit ();
 		StopGetFear ();
 		StopGetScare ();
+		myAnimator.SetBool ("Idle", false);
+		myAnimator.SetBool ("Attaking", false);
 	}
 
 	//Idle States
 	void StartIdle(){
 		ResetStates ();
 		currentState = "isIdling";
+		myAnimator.SetBool ("Idle", true);
 	}
 	void Idle(){
 		rotation = Quaternion.LookRotation(Direction); // Added 8===D
@@ -169,6 +176,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	//Atthack States
 	void StartAttack(){
+		ResetStates ();
 		currentState = "isAttacking";
 		Debug.Log ("Attack Started");  // 8===D
 		if (!vAtkHere)
@@ -178,6 +186,7 @@ public class BasicEnemyScript : MonoBehaviour {
 			vAtkHere = true;
 			vAtkBox.SetActive (true);
 			}
+		myAnimator.SetBool ("Attaking", true);
 		//activate weapon collider
 	}
 	void Attack(){
@@ -187,6 +196,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void StopAttack(){
 		currentState = "none";
+		myAnimator.SetBool ("Attaking", false);
 		//disable weapon collider
 	}
 	//Walking states
