@@ -92,11 +92,18 @@ public class Scr_Player : MonoBehaviour {
 	public float vBarkLS = 1f; // Bark Life Span
 	public float vBarkCD; // Bark Cool Down
 
+	//Animations Variables o_o_o_o_o_o_o_o_o_o_o_o
+
+	private Animator myAnimator; //This object's animator component
+	private AnimatorStateInfo myAnimatorStateInfo;
+	public float myAnimatorNormalizedTime = 0.0f;
+
 
 	// There can only be one;
 	private bool TheOne;
 	void Awake(){
 		DontDestroyOnLoad (this.transform.gameObject);
+		myAnimator = GetComponent<Animator>();
 		GameObject[] Those = GameObject.FindGameObjectsWithTag ("Player");
 		int tCount = 0;
 		foreach (GameObject That in Those) {
@@ -148,6 +155,9 @@ public class Scr_Player : MonoBehaviour {
 		cc.Move (vDirection * Time.deltaTime * vSpeed);
 		if (transform.position.y <= -5f)
 			transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
+		//Animator State Info
+		myAnimatorStateInfo = myAnimator.GetCurrentAnimatorStateInfo(0);
+		myAnimatorNormalizedTime = myAnimatorStateInfo.normalizedTime;
 
 	}
 	// Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes // Directions, angles, and fixes
