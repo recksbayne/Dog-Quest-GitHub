@@ -102,22 +102,52 @@ public class Scr_Canvas : MonoBehaviour {
 			break;
 		case 1:
 			if (vCurtRoom == 0)
-				vPlayer.transform.position = new Vector3 (0f, 2f,6f);
+				vPlayer.transform.position = new Vector3 (-.5f, 2f,6f);
 			if (vCurtRoom == 2)
-				vPlayer.transform.position = new Vector3 (3f, 2f, -3f);
+				vPlayer.transform.position = new Vector3 (3f, 2f, -0.5f);
 			if (vCurtRoom == 3)
-				vPlayer.transform.position = new Vector3 (-3f, 2f, -3f);
+				vPlayer.transform.position = new Vector3 (-4f, 2f, -.5f);
 			if (vCurtRoom == 4)
-				vPlayer.transform.position = new Vector3 (0f, 2f, -6f);
+				vPlayer.transform.position = new Vector3 (0.5f, 2f, -6f);
 			break;
 		case 2:
-			vPlayer.transform.position = new Vector3 (-1f, 2f, -1f);
+			vPlayer.transform.position = new Vector3 (-1f, 2f, -0.5f);
 			break;
 		case 3:
-			vPlayer.transform.position = new Vector3 (1f, 2f, -1f);
+			vPlayer.transform.position = new Vector3 (1f, 2f, 1.5f);
 			break;
 		case 4:
-			vPlayer.transform.position = new Vector3 (0f, 2f, 6f);
+			if (vCurtRoom == 1)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, 6f);
+			if (vCurtRoom == 5)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -5f);
+			break;
+		case 5:
+			if (vCurtRoom == 4)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, 3f);
+			if (vCurtRoom == 6)
+				vPlayer.transform.position = new Vector3 (-2f, 2f, 0f);
+			break;
+		case 6:
+			if (vCurtRoom == 5)
+				vPlayer.transform.position = new Vector3 (2f, 2f, -2f);
+			if (vCurtRoom == 7)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, 4f);
+			break;
+		case 7:
+			if (vCurtRoom == 6)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -4f);
+			if (vCurtRoom == 8)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, 5f);
+			break;
+		case 8:
+			if (vCurtRoom == 7)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, -3f);
+			if (vCurtRoom == 9)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, 8f);
+			break;
+		case 9:
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -2f);
 			break;
 		}
 		SceneManager.LoadScene(vNextRoom);
