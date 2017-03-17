@@ -43,6 +43,8 @@ public class BasicEnemyScript : MonoBehaviour {
 	//Animations Variables
 	public GameObject catModel;
 	private Animator myAnimator;
+	public float BlockCooldown;
+	private float Blockingtime;
 
 	void Awake(){
 		timeScared = 0f;
@@ -59,6 +61,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void Start () {
 		vMoving = false;
 		OrbDetected = false;
+		Blockingtime = 0f;
 	}
 
 	// Update is called once per frame
@@ -100,11 +103,13 @@ public class BasicEnemyScript : MonoBehaviour {
 			Debug.Log ("collider Working");
 			StartGetHit ();
 		}
-		if (impactObject.name == "DogWeapon" && currentState == "isGettingFear" && EnemyCode == 2) {
+		if (impactObject.name == "DogWeapon" && currentState == "isGettingFear" && currentState != "isGettingHit" && EnemyCode == 2) {
+			Debug.Log ("collider Working");
 			StartGetHit ();
 		}
-		//if (impactObject.name == "Obj_Bark") // 8===D
-		//StartGetFear ();
+		if (impactObject.name == "DogWeapon" && currentState != "isGettingFear" && currentState != "isGettingHit" && EnemyCode == 2) {
+			StartBlock ();
+		}
 	}
 
 	void RunStates(){
@@ -135,6 +140,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		case "isWalking":  			Walk (); 		break;
 		case "isIdling":  			Idle (); 		break;
 		case "isInsideOrb":			Orb ();			break;
+		case "isBlocking":			Blocking ();	break;
 		}
 		/*
 		if (currentState == "isGettingFear")
@@ -207,10 +213,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartWalk(){
 		ResetStates ();
 		currentState = "isWalking";
-		if(EnemyCode == 1)
 		myAnimator.SetBool ("Idle", true);
-		if(EnemyCode == 2)
-			myAnimator.SetBool ("Blocking", true);
 	}
 	void Walk(){
 		speed = normalSpeed;
@@ -235,15 +238,15 @@ public class BasicEnemyScript : MonoBehaviour {
 	void GetHit(){
 		//animation condition
 		Debug.Log("is getting hit");
-		StopGetHit();
 		if (EnemyCode == 1) {
 			Destroy (gameObject);
 		}
-		else if (EnemyCode == 1) {
+		else if (EnemyCode == 2) {
 			lifepoints -= 1;
 			if (lifepoints == 0)
 				Destroy (gameObject);
 		}
+		StopGetHit();
 
 	}
 	void StopGetHit(){
@@ -304,6 +307,23 @@ public class BasicEnemyScript : MonoBehaviour {
 			OrbLocation.y = 0.1f;
 			rotation = Quaternion.LookRotation (OrbLocation);
 			Direction = Vector3.zero;
+	}
+	// Spear cat Block
+	void StartBlock(){
+		ResetStates ();
+		currentState = "isBlocking";
+		myAnimator.SetBool ("Blocking", true);
+	}
+	void Blocking(){
+		Blockingtime += Time.deltaTime;
+		if (Blockingtime >= BlockCooldown) {
+			StopBlock ();
+			Blockingtime = 0f;
+		}
+	}
+	void StopBlock(){
+		currentState = "none";
+		myAnimator.SetBool ("Blocking", false);
 	}
 
 	void GetDogDistance(){
