@@ -25,6 +25,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float timeScared;//time the cat is beaing in getbark state
 	public Vector3 OrbLocation;//locate the orb
 	public Vector3 OrbDirection; //Orb direction
+	public bool OrbDetected;
 	public bool vMoving; //bool that is set when camera charges
 
 	// Attack  8===D
@@ -57,6 +58,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		vMoving = false;
+		OrbDetected = false;
 	}
 
 	// Update is called once per frame
@@ -252,6 +254,12 @@ public class BasicEnemyScript : MonoBehaviour {
 		speed = scareSpeed;
 		ScapeDog ();
 		rotation = Quaternion.LookRotation(Direction);
+		if (OrbDetected) {
+			OrbDirection = OrbLocation - transform.position ;
+			OrbDirection.y = 0f;
+			OrbDirection = OrbDirection.normalized;
+			Direction = OrbDirection;
+		}
 		cc.Move(Direction * speed * Time.deltaTime); // Walk while fear 8===D
 		if (aBounceFrame <= 0f) // 8===D
 			aBounceFrame += .001f; // 8===D
@@ -284,7 +292,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-		GameObject[] CurrentOrbs = GameObject.FindGameObjectsWithTag("Orb");
+		/*GameObject[] CurrentOrbs = GameObject.FindGameObjectsWithTag("Orb");
 		if (CurrentOrbs.Length > 0) {
 			float orbDistance = 100000f;
 			float tempDistance = 0f;
@@ -297,10 +305,11 @@ public class BasicEnemyScript : MonoBehaviour {
 
 			OrbDirection = transform.position - OrbLocation;
 			OrbDirection.y = 0.1f;
-		}
+		}*/
 	}
-	void Orb(){		
-			rotation = Quaternion.LookRotation (OrbDirection);
+	void Orb(){
+			OrbLocation.y = 0.1f;
+			rotation = Quaternion.LookRotation (OrbLocation);
 			Direction = Vector3.zero;
 	}
 
@@ -328,8 +337,9 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartMoving(){
 		vMoving = true;
 	}
-	public void OrbDir(Vector3 orbLocation){
-		
+	public void OrbDir(Vector3 orbLocated){
+		OrbDetected = true;
+		OrbLocation = orbLocated;
 	}
 }
 
