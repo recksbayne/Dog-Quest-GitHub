@@ -9,7 +9,7 @@ public class Scr_Spikes : MonoBehaviour {
 	public bool vMove;
 	// Use this for initialization
 	void Start () {
-		
+		vY = 0.5f;
 	}
 	
 	// Update is called once per frame

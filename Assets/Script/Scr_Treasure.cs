@@ -5,41 +5,43 @@ using UnityEngine;
 public class Scr_Treasure : MonoBehaviour {
 	public bool vLocked;
 	public bool vOpened;
+	public bool vDone;
 	public string vItemName = "Empty";
 	public GameObject vItem;
-	public bool vWiggle;
-	public AnimationCurve vStretchA;
+	public bool vAnimate;
+	public Animator Ani;
 	public float vFrame;
 	// Use this for initialization
 	void Start () {
-		
+		Ani = gameObject.GetComponent<Animator> ();
+		Ani.speed = 0f;
 	}
 	void GetHit(){
-		if (!vWiggle) {
-			vWiggle = true;
+		if (!vOpened) {
+			vAnimate = true;
+			vOpened = true;
+			Ani.speed = 1f;
 		}
+		Debug.Log ("I got a hit");
 	}
-
 	// Update is called once per frame
 	void Update () {
-		float tTmp = 0f;
-		if (vWiggle) {
+		if (vAnimate) {
 			vFrame += 0.025f;
-			tTmp = vStretchA.Evaluate (vFrame) / 2f;
-			if (vFrame >= .7f && !vOpened)
-				{GameObject tObj;
+			if (!vDone && vFrame > .7f){
+				GameObject tObj;
 				tObj = Instantiate (vItem);
 				tObj.transform.position = new Vector3 (transform.position.x,transform.position.y+1f,transform.position.z);
 				vOpened = true;
+				vDone = true;
 			}
 			if (vFrame >= 1f){
-				vFrame = 0f;
-				vWiggle = false;
-				vOpened = false;
+				vFrame = 1f;
+				vAnimate = false;
 			}
-				
 		}
-		this.transform.localScale = new Vector3(1f+tTmp*1.25f,1f-tTmp*1.25f,1f+tTmp*1.25f);
+		//Ani["Open"].normalizedTime = vFrame;
+		//this.transform.localScale = new Vector3(1f+tTmp*1.25f,1f-tTmp*1.25f,1f+tTmp*1.25f);
 
 	}
 }
