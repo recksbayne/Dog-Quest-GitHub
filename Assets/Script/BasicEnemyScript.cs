@@ -292,20 +292,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-		/*GameObject[] CurrentOrbs = GameObject.FindGameObjectsWithTag("Orb");
-		if (CurrentOrbs.Length > 0) {
-			float orbDistance = 100000f;
-			float tempDistance = 0f;
-			foreach (GameObject nearestOrb in CurrentOrbs) {
-				tempDistance = Vector3.Distance (transform.position, nearestOrb.transform.position);
-				if (orbDistance < tempDistance) {
-					OrbLocation = nearestOrb.gameObject.transform.position;	
-				}
-			}
-
-			OrbDirection = transform.position - OrbLocation;
-			OrbDirection.y = 0.1f;
-		}*/
 	}
 	void Orb(){
 			OrbLocation.y = 0.1f;
