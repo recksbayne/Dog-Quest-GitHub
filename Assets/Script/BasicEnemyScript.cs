@@ -159,7 +159,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		StopGetFear ();
 		StopGetScare ();
 		myAnimator.SetBool ("Idle", false);
-		myAnimator.SetBool ("Attaking", false);
+		myAnimator.SetBool ("Attacking", false);
 	}
 
 	//Idle States
@@ -186,7 +186,7 @@ public class BasicEnemyScript : MonoBehaviour {
 			vAtkHere = true;
 			vAtkBox.SetActive (true);
 			}
-		myAnimator.SetBool ("Attaking", true);
+		myAnimator.SetBool ("Attacking", true);
 		//activate weapon collider
 	}
 	void Attack(){
@@ -196,13 +196,14 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void StopAttack(){
 		currentState = "none";
-		myAnimator.SetBool ("Attaking", false);
+		myAnimator.SetBool ("Attacking", false);
 		//disable weapon collider
 	}
 	//Walking states
 	void StartWalk(){
 		ResetStates ();
 		currentState = "isWalking";
+		myAnimator.SetBool ("Idle", true);
 	}
 	void Walk(){
 		speed = normalSpeed;
@@ -245,6 +246,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartGetFear(){
 		ResetStates ();
 		currentState = "isGettingFear";
+		myAnimator.SetBool ("Idle", true);
 	}
 	void GetFear(){
 		speed = scareSpeed;
@@ -267,6 +269,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void startGetScare(){
 		ResetStates ();
 		currentState = "isGettingScared";
+		myAnimator.SetBool ("Idle", true);
 	}
 	void GetScare(){
 		ScapeDog ();
@@ -281,25 +284,24 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-	}
-	void Orb(){
 		GameObject[] CurrentOrbs = GameObject.FindGameObjectsWithTag("Orb");
 		if (CurrentOrbs.Length > 0) {
 			float orbDistance = 100000f;
 			float tempDistance = 0f;
-			foreach (GameObject nearestOrb in CurrentOrbs)
-			{
-					tempDistance = Vector3.Distance(transform.position,nearestOrb.transform.position);
+			foreach (GameObject nearestOrb in CurrentOrbs) {
+				tempDistance = Vector3.Distance (transform.position, nearestOrb.transform.position);
 				if (orbDistance < tempDistance) {
 					OrbLocation = nearestOrb.gameObject.transform.position;	
 				}
 			}
-					
+
 			OrbDirection = transform.position - OrbLocation;
 			OrbDirection.y = 0.1f;
+		}
+	}
+	void Orb(){		
 			rotation = Quaternion.LookRotation (OrbDirection);
 			Direction = Vector3.zero;
-		}
 	}
 
 	void GetDogDistance(){
@@ -325,6 +327,9 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	void StartMoving(){
 		vMoving = true;
+	}
+	public void OrbDir(Vector3 orbLocation){
+		
 	}
 }
 
