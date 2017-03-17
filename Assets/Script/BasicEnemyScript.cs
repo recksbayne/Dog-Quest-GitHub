@@ -162,6 +162,8 @@ public class BasicEnemyScript : MonoBehaviour {
 		StopGetScare ();
 		myAnimator.SetBool ("Idle", false);
 		myAnimator.SetBool ("Attacking", false);
+		if(EnemyCode == 2)
+			myAnimator.SetBool ("Blocking", false);
 	}
 
 	//Idle States
@@ -205,7 +207,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartWalk(){
 		ResetStates ();
 		currentState = "isWalking";
+		if(EnemyCode == 1)
 		myAnimator.SetBool ("Idle", true);
+		if(EnemyCode == 2)
+			myAnimator.SetBool ("Blocking", true);
 	}
 	void Walk(){
 		speed = normalSpeed;
@@ -223,6 +228,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	//Getting damage states
 	void StartGetHit(){
+		myAnimator.SetBool ("Idle", true);
 		ResetStates ();
 		currentState = "isGettingHit";
 	}
@@ -292,6 +298,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
+		myAnimator.SetBool ("Idle", true);
 	}
 	void Orb(){
 			OrbLocation.y = 0.1f;
