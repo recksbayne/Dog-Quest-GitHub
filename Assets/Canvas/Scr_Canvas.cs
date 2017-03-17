@@ -133,6 +133,12 @@ public class Scr_Canvas : MonoBehaviour {
 				vPlayer.transform.position = new Vector3 (2f, 2f, -2f);
 			if (vCurtRoom == 7)
 				vPlayer.transform.position = new Vector3 (-.5f, 2f, 4f);
+			if (vCurtRoom == 14)
+				vPlayer.transform.position = new Vector3 (-6f, 2f, -1.5f);
+			if (vCurtRoom == 15)
+				vPlayer.transform.position = new Vector3 (5f, 2f, -1.5f);
+			if (vCurtRoom == 17)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -7f);
 			break;
 		case 7:
 			if (vCurtRoom == 6)
@@ -148,6 +154,47 @@ public class Scr_Canvas : MonoBehaviour {
 			break;
 		case 9:
 				vPlayer.transform.position = new Vector3 (-.5f, 2f, -2f);
+			break;
+		case 10:
+			if (vCurtRoom == 7)
+				vPlayer.transform.position = new Vector3 (3f, 2f, -5f);
+			if (vCurtRoom == 11)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, 8f);
+			if (vCurtRoom == 13)
+			vPlayer.transform.position = new Vector3 (-3f, 2f, -4.5f);
+			break;
+		case 11:
+			if (vCurtRoom == 10)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, -5f);
+			if (vCurtRoom == 12)
+				vPlayer.transform.position = new Vector3 (.5f, 2f, 5f);
+			break;
+		case 12:
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -8f);
+			break;
+		case 13:
+			if (vCurtRoom == 10)
+				vPlayer.transform.position = new Vector3 (-1.5f, 2f, -1.5f);
+			if (vCurtRoom == 14)
+				vPlayer.transform.position = new Vector3 (-3.5f, 2f, -2f);
+			break;
+		case 14:
+			if (vCurtRoom == 13)
+				vPlayer.transform.position = new Vector3 (-2.5f, 2f, 1f);
+			if (vCurtRoom == 6)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, -1.5f);
+			break;
+		case 15:
+			if (vCurtRoom == 16)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f, 8.5f);
+			if (vCurtRoom == 6)
+				vPlayer.transform.position = new Vector3 (-2f, 2f, -4f);
+			break;
+		case 16:
+			vPlayer.transform.position = new Vector3 (-2f, 2f, -3f);
+			break;
+		case 17:
+			vPlayer.transform.position = new Vector3 (.5f, 2f, 8f);
 			break;
 		}
 		SceneManager.LoadScene(vNextRoom);

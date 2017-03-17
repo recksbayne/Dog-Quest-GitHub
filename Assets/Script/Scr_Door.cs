@@ -19,7 +19,7 @@ public class Scr_Door : MonoBehaviour {
 			Temp = transform.FindChild ("Obj_Door").gameObject;
 			if (Temp != null) {
 				if (!vLocked)
-					Destroy (Temp);
+					Temp.SetActive(false);
 			}
 		}
 	}
@@ -58,6 +58,7 @@ public class Scr_Door : MonoBehaviour {
 
 	void OnTriggerEnter(Collider Other){
 		if (Other.tag == "Player")
+		if (!vCanvas.GetComponent<Scr_Canvas>().vTransition)
 			if (!vWiggle) {
 				vWiggle = true;
 				vFrame = 0f;

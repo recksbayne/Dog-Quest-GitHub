@@ -17,6 +17,10 @@ public class Scr_Health : MonoBehaviour {
 	private int vCount;
 	
 	// Update is called once per frame
+	void Awake(){
+
+		vModel = transform.FindChild ("Obj_Model").gameObject;
+	}
 	void Update () {
 		if (vFlicker)
 			Flicker ();
