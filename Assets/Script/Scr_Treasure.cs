@@ -11,10 +11,18 @@ public class Scr_Treasure : MonoBehaviour {
 	public bool vAnimate;
 	public Animator Ani;
 	public float vFrame;
+
+	public int vChestNumber;
 	// Use this for initialization
 	void Start () {
 		Ani = gameObject.GetComponent<Animator> ();
 		Ani.speed = 0f;
+		GameObject tGO = GameObject.FindGameObjectWithTag ("Player");
+		bool tBool = tGO.GetComponent<Scr_Player> ().aChestOpened [vChestNumber];
+		if (!tBool) {
+			Ani.speed = 50f;
+			vOpened = true;
+		}
 	}
 	void GetHit(){
 		if (!vOpened) {
@@ -33,6 +41,8 @@ public class Scr_Treasure : MonoBehaviour {
 				tObj = Instantiate (vItem);
 				tObj.transform.position = new Vector3 (transform.position.x,transform.position.y+1f,transform.position.z);
 				vOpened = true;
+				GameObject tGO = GameObject.FindGameObjectWithTag ("Player");
+				tGO.GetComponent<Scr_Player> ().aChestOpened [vChestNumber] = false;
 				vDone = true;
 			}
 			if (vFrame >= 1f){

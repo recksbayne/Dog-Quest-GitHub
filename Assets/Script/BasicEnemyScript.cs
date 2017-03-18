@@ -106,6 +106,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	void OnTriggerEnter(Collider impactObject){
 		if (impactObject.name == "DogWeapon" && currentState != "isGettingHit" && EnemyCode == 1) {
 			Debug.Log ("collider Working");
+			if (impactObject.GetComponent<Scr_Hitbox>().vIsWeapon == true)
 			StartGetHit ();
 		}
 		if (impactObject.name == "DogWeapon" && currentState == "isGettingFear" && currentState != "isGettingHit" && EnemyCode == 2) {
@@ -204,6 +205,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		myAnimator.SetBool ("Attacking", true);
 		//activate weapon collider
 	}
+
 	void Attack(){
 		//animation condition 8===D
 		if (!vAtkHere)

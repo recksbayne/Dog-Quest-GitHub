@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Scr_Hitbox : MonoBehaviour {
 	public GameObject vPlayer;
+	public bool vIsWeapon = false;
 	// Use this for initialization
 	void Start () {
 		
@@ -18,14 +19,16 @@ public class Scr_Hitbox : MonoBehaviour {
 		case "TreasureBox":
 			Other.SendMessage ("GetHit");
 			break;
-		//case "Door":
-		//	Other.SendMessage ("GetHit");
-		//	break;
-		case "Switch":
-			Debug.Log("I touched the Switch");
+		case "Door":
 			Other.SendMessage ("GetHit");
 			break;
-
+		case "Switch":
+			//if (vIsWeapon)
+				Other.SendMessage ("GetHit");
+			break;
+		case "Player":
+			Other.SendMessage("GetDamaged");
+			break;
 		}
 	}
 }

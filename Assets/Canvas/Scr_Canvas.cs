@@ -158,6 +158,7 @@ public class Scr_Canvas : MonoBehaviour {
 		case 10:
 			if (vCurtRoom == 7)
 				vPlayer.transform.position = new Vector3 (3f, 2f, -5f);
+				vPlayer.GetComponent<Scr_Player>().vIsOnSand = false;
 			if (vCurtRoom == 11)
 				vPlayer.transform.position = new Vector3 (.5f, 2f, 8f);
 			if (vCurtRoom == 13)

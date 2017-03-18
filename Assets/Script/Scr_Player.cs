@@ -99,11 +99,41 @@ public class Scr_Player : MonoBehaviour {
 	public float myAnimatorNormalizedTime = 0.0f;
 
 
+	// Key System
+	public bool[] aChestOpened;
+	public bool[] aDoorsOpened;
+	public bool[] aDigOpened;
+	public bool[] aBonesHere;
+	public int vKeyCount;
+	public bool[] aBones;
+	public int vBoneCount;
+	public bool vBossKey;
+	public bool vHasShovel;
+	public GameObject vShovel;
+
+
 	// There can only be one;
 	private bool TheOne;
 	void Awake(){
+		aDoorsOpened = new bool[5];
+		for (int i = 0; i < 5; i++) {
+			aDoorsOpened [i] = true;
+		}
+		aChestOpened = new bool[3];
+		for (int i = 0; i < 3; i++) {
+			aChestOpened [i] = true;
+		}
+		aDigOpened = new bool[6];
+		for (int i = 0; i < 6; i++) {
+			aDigOpened [i] = true;
+		}
+		aBonesHere = new bool[10];
+		for (int i = 0; i < 10; i++) {
+			aBonesHere [i] = true;
+		}
 		DontDestroyOnLoad (this.transform.gameObject);
-		myAnimator = GetComponent<Animator>();
+		GameObject tGO = vModel.transform.FindChild ("Pre_Dog").gameObject;
+		myAnimator = tGO.GetComponent<Animator>();
 		GameObject[] Those = GameObject.FindGameObjectsWithTag ("Player");
 		int tCount = 0;
 		foreach (GameObject That in Those) {
@@ -140,6 +170,7 @@ public class Scr_Player : MonoBehaviour {
 			if (vAtkTime >= vAtkLS) {
 				vAtkHere = false;
 				vAtkBox.SetActive(false);
+				myAnimator.SetBool ("Attack", false);
 			}
 		}
 		if (vBarkHere) {
@@ -152,6 +183,8 @@ public class Scr_Player : MonoBehaviour {
 		if (vBarkCD >= 0f)
 			vBarkCD -= Time.deltaTime;
 		FunInputCheck ();
+		// if ((vDirection.magnitude > 0f) && !vAtkHere) DEBUG if you want the player to stay in place
+
 		if (vDirection.magnitude > 0f)
 		cc.Move (vDirection * Time.deltaTime * vSpeed);
 		if (transform.position.y <= -5f)
@@ -221,11 +254,19 @@ public class Scr_Player : MonoBehaviour {
 			}
 			break;
 		}
+		tTmp -= .34f;
+
 		Vector3 Temp = new Vector3 (vDirection.x,tTmp,vDirection.z);
 		Temp = transform.position - vDirection;
-		if (vDirection.magnitude > 0f)
-			vModel.transform.LookAt(transform.position-vDirection);
+		if (vDirection.magnitude > 0f) {
+			vDirection.y += .21f;
+			if (vUnderground)
+				vDirection.y += -tTmp-.2f;
+			if (!vAtkHere)
+				vModel.transform.LookAt (transform.position - vDirection);
+		}
 		vModel.transform.localPosition = new Vector3(0f,tTmp,0f);
+
 
 	}
 	// Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation // Camera Setup and rotation 
@@ -324,11 +365,13 @@ public class Scr_Player : MonoBehaviour {
 		}
 
 		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel)) && !vAtkHere && vHasAtk) {
-			if (vIsOnSand) {
+			if (vIsOnSand && vHasShovel) {
+				myAnimator.Play ("Dig", -1,0f);
 				vUnderground = true;
 				vActing = true;
 				vActionType = "Dig";
 			} else {
+				myAnimator.Play ("Attack", -1,0f);
 				vAtkTime = 0f;
 				vAtkHere = true;
 				vAtkBox.SetActive (true);
@@ -338,6 +381,8 @@ public class Scr_Player : MonoBehaviour {
 
 
 		if ((Input.GetKey (KBark) || Input.GetKey (JBark)) && vBarkCD <= 0f){
+
+			myAnimator.Play ("Bark", -1,0f);
 			vBarkTime = 0f;
 			vBarkHere = true;
 			vBarkCD = 3f;
@@ -415,6 +460,11 @@ public class Scr_Player : MonoBehaviour {
 				aBounceFrame += .001f;
 		}
 	}
+	void ReceiveShovel(){
+		vHasShovel = true;
+		vShovel.SetActive (true);
+		vAtkBox.GetComponent<Scr_Hitbox> ().vIsWeapon = true;
+	}
 	// Trigger // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger // Trigger  // Trigger 
 
 
@@ -426,7 +476,10 @@ public class Scr_Player : MonoBehaviour {
 			case "DigSpot":
 			if (vActionType == "Under")
 				Other.SendMessage ("FoundYou");
-				break;
+			break;
+		case "Collectable":
+			Other.SendMessage ("GotYou");
+			break;
 		case "Spikes":
 			//transform.position = vVectorPrevious;
 			Vector3 tDirection = Other.transform.position - transform.position;
@@ -445,6 +498,4 @@ public class Scr_Player : MonoBehaviour {
 			break;
 		}
 	}
-	// Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room // Go to next room 
-
 }
