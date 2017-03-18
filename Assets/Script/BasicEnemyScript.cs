@@ -122,7 +122,6 @@ public class BasicEnemyScript : MonoBehaviour {
 			Orb ();
 		}
 		else if (timeScared > ScareCooldown && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
-			timeScared = 0;
 			startGetScare ();
 		}
 		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
@@ -171,6 +170,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		StopGetHit ();
 		StopGetFear ();
 		StopGetScare ();
+		timeScared = 0;
 		myAnimator.SetBool ("Idle", false);
 		myAnimator.SetBool ("Attacking", false);
 		if(EnemyCode == 2)
@@ -295,12 +295,24 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-		myAnimator.SetBool ("Idle", true);
+		if (!vAtkHere)
+		{
+			Debug.Log ("Attacked");
+			vAtkTime = 0f;
+			vAtkHere = true;
+			vAtkBox.SetActive (true);
+		}
+		myAnimator.SetBool ("Attacking", true);
 	}
 	void Orb(){
 			OrbLocation.y = 0.1f;
 			rotation = Quaternion.LookRotation (OrbLocation);
 			Direction = Vector3.zero;
+		if (!vAtkHere) {
+			myAnimator.SetBool ("Attacking", false);
+			myAnimator.SetBool ("Idle", true);
+		}
+		
 	}
 	// Spear cat Block
 	void StartBlock(){
