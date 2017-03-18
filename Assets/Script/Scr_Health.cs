@@ -63,6 +63,7 @@ public class Scr_Health : MonoBehaviour {
 				vHealth -= 1;
 				if (gameObject.tag == "Cat") {
 					if (vHealth <= 0) {
+						gameObject.SendMessage ("isDead");
 						Destroy (gameObject);
 					}
 					gameObject.SendMessage ("StopGetHit");

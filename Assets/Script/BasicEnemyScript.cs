@@ -46,6 +46,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float BlockCooldown;
 	private float Blockingtime;
 
+	// Bones
+	public GameObject Bone;
+	public GameObject Skull;
+
 	void Awake(){
 		timeScared = 0f;
 		proDog = GameObject.FindGameObjectWithTag ("Player");
@@ -343,5 +347,20 @@ public class BasicEnemyScript : MonoBehaviour {
 	public void OrbDir(Vector3 orbLocated){
 		OrbDetected = true;
 		OrbLocation = orbLocated;
+	}
+	void isDead(){
+		Instantiate (Skull, transform.position, Quaternion.identity);
+		if (EnemyCode == 1) {
+			Vector3 tempPos = new Vector3(transform.position.x,transform.position.y,transform.position.z + 0.5f);
+			Instantiate (Bone, tempPos, Quaternion.identity);
+		}
+		if (EnemyCode == 2) {
+			Vector3 tempPos = new Vector3(transform.position.x,transform.position.y,transform.position.z + 0.5f);
+			Instantiate (Bone, tempPos, Quaternion.identity);
+			tempPos = new Vector3(transform.position.x - 0.5f,transform.position.y,transform.position.z - 0.5f);
+			Instantiate (Bone, tempPos, Quaternion.identity);
+			tempPos = new Vector3(transform.position.x + 0.5f,transform.position.y,transform.position.z - 0.5f);
+			Instantiate (Bone, tempPos, Quaternion.identity);
+		}
 	}
 }
