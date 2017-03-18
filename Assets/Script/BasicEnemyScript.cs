@@ -146,22 +146,6 @@ public class BasicEnemyScript : MonoBehaviour {
 		case "isInsideOrb":			Orb ();			break;
 		case "isBlocking":			Blocking ();	break;
 		}
-		/*
-		if (currentState == "isGettingFear")
-			GetFear ();
-		else if (currentState == "isGettingScared")
-			GetScare ();
-		else if (currentState == "isGettingHit")
-			GetHit ();
-		else if (currentState == "isAttacking")
-			Attack ();
-		else if (currentState == "isWalking")
-			Walk ();
-		else if (currentState == "isIdling")
-			Idle ();
-		*/
-		//Turn every frame, overlapping state
-		//Turn();
 	}
 	void ResetStates(){
 		StopIdle ();
@@ -295,14 +279,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-		if (!vAtkHere)
-		{
-			Debug.Log ("Attacked");
-			vAtkTime = 0f;
-			vAtkHere = true;
-			vAtkBox.SetActive (true);
-		}
-		myAnimator.SetBool ("Attacking", true);
 	}
 	void Orb(){
 			OrbLocation.y = 0.1f;
@@ -337,8 +313,18 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 
 	void DogBarking(){
-		if(DogDistance < barkRadius && currentState != "isInsideOrb")
+		if(DogDistance < barkRadius && currentState != "isInsideOrb" && currentState != "isGettingHit")
 			StartGetFear ();
+		if (currentState == "isInsideOrb") {
+			if (!vAtkHere)
+			{
+				vAtkTime = 0f;
+				vAtkHere = true;
+				vAtkBox.SetActive (true);
+			}
+			myAnimator.SetBool ("Idle", false);
+			myAnimator.SetBool ("Attacking", true);
+		}
 	}
 	void DogDirection(){
 		Direction = proDog.transform.position - transform.position;
