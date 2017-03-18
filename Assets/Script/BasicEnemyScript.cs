@@ -62,6 +62,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		vMoving = false;
 		OrbDetected = false;
 		Blockingtime = 0f;
+		currentState = "none";
 	}
 
 	// Update is called once per frame
@@ -124,7 +125,7 @@ public class BasicEnemyScript : MonoBehaviour {
 			StartAttack ();
 		}
 		//Walk
-		else if (currentState != "isWalking" && currentState != "isGettingHit" && currentState != "isAttacking" && DogDistance > attackRange && currentState != "isGettingFear" && currentState != "isGettingScared" && vMoving) {
+		else if ( currentState == "isIdling" && DogDistance > attackRange && vMoving) {
 			StartWalk ();
 		}
 		//Idle
