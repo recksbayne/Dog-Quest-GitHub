@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Src_OrbScript : MonoBehaviour {
+public class Scr_OrbScript : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other){
 		if (other.gameObject.tag == "Cat") {

@@ -25,7 +25,8 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float timeScared;//time the cat is beaing in getbark state
 	public Vector3 OrbLocation;//locate the orb
 	public Vector3 OrbDirection; //Orb direction
-	public bool OrbDetected;
+	public Vector3 OrbLookpos;
+	public bool OrbDetected;// Bool that defines the orb detection
 	public bool vMoving; //bool that is set when camera charges
 
 	// Attack  8===D
@@ -78,7 +79,11 @@ public class BasicEnemyScript : MonoBehaviour {
 		//State Maachine
 		RunStates ();
 		//Pursuit Dog function
-		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f); // rotation code i found that actually works pretty good
+		if (currentState != "isInsideOrb") {
+			transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 10f); // rotation code i found that actually works pretty good
+		} else {
+			gameObject.transform.LookAt (OrbLookpos);
+		}
 		// cc.Move(Direction * speed * Time.deltaTime); // Went to Walk() 8===D
 
 		if (vAtkHere) { // 8===D
@@ -281,8 +286,8 @@ public class BasicEnemyScript : MonoBehaviour {
 		currentState = "isInsideOrb";
 	}
 	void Orb(){
-			OrbLocation.y = 0.1f;
-			rotation = Quaternion.LookRotation (OrbLocation);
+			//OrbLocation.y = 0.1f;
+			rotation = Quaternion.LookRotation (OrbLookpos);
 			Direction = Vector3.zero;
 		if (!vAtkHere) {
 			myAnimator.SetBool ("Attacking", false);
@@ -345,6 +350,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	public void OrbDir(Vector3 orbLocated){
 		OrbDetected = true;
 		OrbLocation = orbLocated;
+	}
+	public void OrbLook(Vector3 orbLook){
+		OrbLookpos = orbLook;
+		OrbLookpos.y = 1.2f;
 	}
 	void isDead(){
 		Instantiate (Skull, transform.position, Quaternion.identity);
