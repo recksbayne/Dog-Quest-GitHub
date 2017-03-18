@@ -60,10 +60,17 @@ public class Scr_Health : MonoBehaviour {
 			}
 			if (vCount >= 12) {
 				vFlicker = false;
+				vHealth -= 1;
+				if (gameObject.tag == "Cat") {
+					if (vHealth <= 0) {
+						Destroy (gameObject);
+					}
+					gameObject.SendMessage ("StopGetHit");
+				}
 			}
 		}
 	}
-	void GetDamaged(){
+	public void GetDamaged(){
 		if (!vFlicker) {
 			vOn = true;
 			vFlicker = true;
