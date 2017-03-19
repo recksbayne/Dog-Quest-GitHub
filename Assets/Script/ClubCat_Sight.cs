@@ -9,5 +9,9 @@ public class ClubCat_Sight : MonoBehaviour {
 			Debug.Log ("ENTER");
 			ProCat.OrbDir (something.gameObject.transform.position);
 		}
+		if (something.gameObject.tag == "Orb_look") {
+			Debug.Log ("ENTER");
+			ProCat.OrbLook (something.gameObject.transform.position);
+		}
 	}
 }

@@ -25,7 +25,8 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float timeScared;//time the cat is beaing in getbark state
 	public Vector3 OrbLocation;//locate the orb
 	public Vector3 OrbDirection; //Orb direction
-	public bool OrbDetected;
+	public Vector3 OrbLookpos;
+	public bool OrbDetected;// Bool that defines the orb detection
 	public bool vMoving; //bool that is set when camera charges
 
 	// Attack  8===D
@@ -78,7 +79,11 @@ public class BasicEnemyScript : MonoBehaviour {
 		//State Maachine
 		RunStates ();
 		//Pursuit Dog function
-		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f); // rotation code i found that actually works pretty good
+		if (currentState != "isInsideOrb") {
+			transform.rotation = Quaternion.Slerp (transform.rotation, rotation, Time.deltaTime * 10f); // rotation code i found that actually works pretty good
+		} else {
+			gameObject.transform.LookAt (OrbLookpos);
+		}
 		// cc.Move(Direction * speed * Time.deltaTime); // Went to Walk() 8===D
 
 		if (vAtkHere) { // 8===D
@@ -123,7 +128,6 @@ public class BasicEnemyScript : MonoBehaviour {
 			Orb ();
 		}
 		else if (timeScared > ScareCooldown && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
-			timeScared = 0;
 			startGetScare ();
 		}
 		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
@@ -148,22 +152,6 @@ public class BasicEnemyScript : MonoBehaviour {
 		case "isInsideOrb":			Orb ();			break;
 		case "isBlocking":			Blocking ();	break;
 		}
-		/*
-		if (currentState == "isGettingFear")
-			GetFear ();
-		else if (currentState == "isGettingScared")
-			GetScare ();
-		else if (currentState == "isGettingHit")
-			GetHit ();
-		else if (currentState == "isAttacking")
-			Attack ();
-		else if (currentState == "isWalking")
-			Walk ();
-		else if (currentState == "isIdling")
-			Idle ();
-		*/
-		//Turn every frame, overlapping state
-		//Turn();
 	}
 	void ResetStates(){
 		StopIdle ();
@@ -172,6 +160,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		StopGetHit ();
 		StopGetFear ();
 		StopGetScare ();
+		timeScared = 0;
 		myAnimator.SetBool ("Idle", false);
 		myAnimator.SetBool ("Attacking", false);
 		if(EnemyCode == 2)
@@ -297,12 +286,16 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartOrb(){
 		ResetStates ();
 		currentState = "isInsideOrb";
-		myAnimator.SetBool ("Idle", true);
 	}
 	void Orb(){
-			OrbLocation.y = 0.1f;
-			rotation = Quaternion.LookRotation (OrbLocation);
+			//OrbLocation.y = 0.1f;
+			rotation = Quaternion.LookRotation (OrbLookpos);
 			Direction = Vector3.zero;
+		if (!vAtkHere) {
+			myAnimator.SetBool ("Attacking", false);
+			myAnimator.SetBool ("Idle", true);
+		}
+		
 	}
 	// Spear cat Block
 	void StartBlock(){
@@ -327,8 +320,18 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 
 	void DogBarking(){
-		if(DogDistance < barkRadius && currentState != "isInsideOrb")
+		if(DogDistance < barkRadius && currentState != "isInsideOrb" && currentState != "isGettingHit")
 			StartGetFear ();
+		if (currentState == "isInsideOrb") {
+			if (!vAtkHere)
+			{
+				vAtkTime = 0f;
+				vAtkHere = true;
+				vAtkBox.SetActive (true);
+			}
+			myAnimator.SetBool ("Idle", false);
+			myAnimator.SetBool ("Attacking", true);
+		}
 	}
 	void DogDirection(){
 		Direction = proDog.transform.position - transform.position;
@@ -349,6 +352,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	public void OrbDir(Vector3 orbLocated){
 		OrbDetected = true;
 		OrbLocation = orbLocated;
+	}
+	public void OrbLook(Vector3 orbLook){
+		OrbLookpos = orbLook;
+		OrbLookpos.y = 1.2f;
 	}
 	void isDead(){
 		Instantiate (Skull, transform.position, Quaternion.identity);
