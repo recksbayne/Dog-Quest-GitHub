@@ -51,6 +51,9 @@ public class BasicEnemyScript : MonoBehaviour {
 	public GameObject Bone;
 	public GameObject Skull;
 
+	//Particles
+	public ParticleSystem Sweat;
+
 	void Awake(){
 		timeScared = 0f;
 		proDog = GameObject.FindGameObjectWithTag ("Player");
@@ -61,6 +64,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		transform.position = new Vector3(transform.position.x,1f,transform.position.z); // Height Fix  8===D
 		// Attack  8===D
 		vAtkBox.SetActive (false);
+		Sweat.Stop ();
 	}
 	// Use this for initialization
 	void Start () {
@@ -212,6 +216,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		myAnimator.SetBool ("Idle", true);
 	}
 	void Walk(){
+		Sweat.Stop ();
 		speed = normalSpeed;
 		rotation = Quaternion.LookRotation(Direction);
 		cc.Move(Direction * speed * Time.deltaTime); // Will move only at walk 8===D
@@ -243,6 +248,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		ResetStates ();
 		currentState = "isGettingFear";
 		myAnimator.SetBool ("Idle", true);
+		Sweat.Play ();
 	}
 	void GetFear(){
 		speed = scareSpeed;
