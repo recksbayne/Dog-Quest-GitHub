@@ -60,7 +60,6 @@ public class Scr_Health : MonoBehaviour {
 			}
 			if (vCount >= 12) {
 				vFlicker = false;
-				vHealth -= 1;
 				if (gameObject.tag == "Cat") {
 					if (vHealth <= 0) {
 						gameObject.SendMessage ("isDead");
@@ -75,6 +74,7 @@ public class Scr_Health : MonoBehaviour {
 		if (!vFlicker) {
 			vOn = true;
 			vFlicker = true;
+			vHealth -= 1;
 			vCount = 0;
 			vTimer = 0f;
 		}
