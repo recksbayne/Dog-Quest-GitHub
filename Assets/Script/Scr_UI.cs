@@ -14,6 +14,10 @@ public class Scr_UI : MonoBehaviour {
 
 	public Image BossKey;
 	public Image RegularKey;
+	public Text RegularKeyText;
+	public Image Bone;
+	public Text BoneText;
+
 
 	//lifepoints
 	public Image l1;
@@ -69,6 +73,29 @@ public class Scr_UI : MonoBehaviour {
 		}
 		if (PlayerHealth.vHealth < 1) {
 			l1.enabled = false;
+		}
+		if (Doggie.vBossKey) {
+			BossKey.enabled = true;
+		} else {
+			BossKey.enabled = false;
+		}
+		if (Doggie.vBoneCount > 0) {
+			Bone.enabled = true;
+			BoneText.enabled = true;
+			BoneText.text = Doggie.vBoneCount.ToString();
+
+		} else {
+			Bone.enabled = false;
+			BoneText.enabled = false;
+		}
+		if (Doggie.vKeyCount > 0) {
+			RegularKey.enabled = true;
+			RegularKeyText.enabled = true;
+			RegularKeyText.text = Doggie.vKeyCount.ToString();
+
+		} else {
+			RegularKey.enabled = false;
+			RegularKeyText.enabled = false;
 		}
 	}
 }
