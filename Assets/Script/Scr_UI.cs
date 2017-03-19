@@ -7,6 +7,7 @@ public class Scr_UI : MonoBehaviour {
 
 	public Scr_Health PlayerHealth;
 	public Scr_Player Doggie;
+	private bool start;
 
 	// ui objects
 	public Image Background;
@@ -17,6 +18,7 @@ public class Scr_UI : MonoBehaviour {
 	public Text RegularKeyText;
 	public Image Bone;
 	public Text BoneText;
+	public Image StartB;
 
 
 	//lifepoints
@@ -35,14 +37,13 @@ public class Scr_UI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 0;
+		start = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKey(KeyCode.Return)){
-			Background.enabled = false;
-			StartScreen.enabled = false;
-			Time.timeScale = 1;
+		if (Input.GetMouseButton (0)) {
+			StartGame ();
 		}
 		if (PlayerHealth.vHealth < 10) {
 			l10.enabled = false;
@@ -97,5 +98,11 @@ public class Scr_UI : MonoBehaviour {
 			RegularKey.enabled = false;
 			RegularKeyText.enabled = false;
 		}
+	}
+	public void StartGame(){
+		Background.CrossFadeAlpha (0.0f, 2.0f, false);
+		StartScreen.CrossFadeAlpha (0.0f, 2.0f, false);
+		StartB.CrossFadeAlpha (0.0f, 2.0f, false);
+		Time.timeScale = 1;
 	}
 }
