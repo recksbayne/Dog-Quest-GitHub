@@ -33,6 +33,8 @@ public class Scr_UI : MonoBehaviour {
 	public Image l9;
 	public Image l10;
 
+	public AudioSource StartSound;
+
 
 	// Use this for initialization
 	void Start () {
@@ -112,6 +114,7 @@ public class Scr_UI : MonoBehaviour {
 		}
 	}
 	public void StartGame(){
+		StartSound.Play ();
 		Background.CrossFadeAlpha (0.0f, 2.0f, false);
 		StartScreen.CrossFadeAlpha (0.0f, 2.0f, false);
 		StartB.CrossFadeAlpha (0.0f, 2.0f, false);

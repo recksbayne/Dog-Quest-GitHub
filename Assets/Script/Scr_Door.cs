@@ -16,6 +16,9 @@ public class Scr_Door : MonoBehaviour {
 	public bool vIsBossDoor;
 	public GameObject vBossDoor;
 
+	public AudioSource DoorOpenSound;
+	public AudioSource DoorUnlockSound;
+
 
 	// Use this for initialization
 	void Start () {
@@ -70,6 +73,7 @@ public class Scr_Door : MonoBehaviour {
 				}
 			} else {
 				if (tGO.GetComponent<Scr_Player> ().vKeyCount > 0) {
+					DoorUnlockSound.Play ();
 					tGO.GetComponent<Scr_Player> ().vKeyCount -= 1;
 					vLocked = false;
 					tGO.GetComponent<Scr_Player> ().aDoorsOpened [vKeyCode] = false;
@@ -89,6 +93,7 @@ public class Scr_Door : MonoBehaviour {
 		if (Other.tag == "Player")
 		if (!vCanvas.GetComponent<Scr_Canvas>().vTransition)
 			if (!vAnimate) {
+				DoorOpenSound.Play ();
 				vAnimate = true;
 				vFrame = 0f;
 			}

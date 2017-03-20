@@ -10,6 +10,7 @@ public class Scr_ItemGained : MonoBehaviour {
 	public int vClick;
 	public string vItem;
 	public GameObject vModel;
+	public AudioSource BonePick;
 
 	// Use this for initialization
 	void Start () {
@@ -27,8 +28,10 @@ public class Scr_ItemGained : MonoBehaviour {
 			tGO.GetComponent<Scr_Player> ().vKeyCount += 1;
 		if (vItem == "BossKey")
 			tGO.GetComponent<Scr_Player> ().vBossKey = true;
-		if (vItem == "Bone")
+		if (vItem == "Bone") {
+			BonePick.Play ();
 			tGO.GetComponent<Scr_Player> ().vBoneCount += 1;
+		}
 		if (vItem == "Spade"){
 			tGO.SendMessage ("ReceiveShovel");
 		}
