@@ -11,6 +11,7 @@ public class Scr_Treasure : MonoBehaviour {
 	public bool vAnimate;
 	public Animator Ani;
 	public float vFrame;
+	public AudioSource ChestSound;
 
 	public int vChestNumber;
 	// Use this for initialization
@@ -26,6 +27,7 @@ public class Scr_Treasure : MonoBehaviour {
 	}
 	void GetHit(){
 		if (!vOpened) {
+			ChestSound.Play ();
 			vAnimate = true;
 			vOpened = true;
 			Ani.speed = 1f;
