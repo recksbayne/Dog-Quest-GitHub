@@ -37,8 +37,9 @@ public class Scr_Canvas : MonoBehaviour {
 		
 	// Update is called once per frame
 	void GotoNextRoom(int vNMessage){
+		//vPrevRoom = vCurtRoom;
 		if (vNMessage == -1){
-			vNextRoom = vPrevRoom;
+			vNextRoom = vCurtRoom;
 		vStartReset = true;
 	}
 		else {
@@ -105,13 +106,20 @@ public class Scr_Canvas : MonoBehaviour {
 
 	void FilterRoom(){
 		Debug.Log ("FilterRoom");
-		vPrevRoom = vCurtRoom;
+		//vPrevRoom = vCurtRoom;
 		vCurtRoom = SceneManager.GetActiveScene ().buildIndex;
+		//if (vNextRoom == 0)
+			
 		switch (vNextRoom) {
+		case 18:
+			vPlayer.transform.position = new Vector3 (0f, 2f, -1f);
+			break;
 		case 0:
 			vPlayer.transform.position = new Vector3 (0f, 2f, -1f);
 			break;
 		case 1:
+			if (vCurtRoom == 18)
+				vPlayer.transform.position = new Vector3 (-.5f, 2f,6f);
 			if (vCurtRoom == 0)
 				vPlayer.transform.position = new Vector3 (-.5f, 2f,6f);
 			if (vCurtRoom == 2)

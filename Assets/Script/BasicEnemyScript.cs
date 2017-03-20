@@ -18,7 +18,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	public float attackRange; // enemy weapon range
 	public float DogDistance; // distance between the enemy and the dog
 	public float PursuitRange; // min distance to enter in pursuit mode
-	public float barkRadius; // set the radius of the bark
+	public float barkRadius;
 	public Scr_Health catHealth; //if we need them
 	public int EnemyCode;// 1 for club-cat 2 for spear cat 3 for possible boss
 	public float ScareCooldown;//if the scare has a cooldown

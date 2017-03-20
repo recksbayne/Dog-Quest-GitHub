@@ -329,8 +329,6 @@ public class Scr_Player : MonoBehaviour {
 			return;
 		}
 
-		if (Input.GetKey (KeyCode.Space))
-			transform.position = new Vector3(2f,1f,2f);
 		if (Input.GetKey (KLeft) || Input.GetAxis ("Horizontal") < 0) {
 			vHoz -= 1;
 			vVer -= 1;
