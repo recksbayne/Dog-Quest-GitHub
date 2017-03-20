@@ -85,12 +85,12 @@ public class Scr_Canvas : MonoBehaviour {
 			vPlayerComp = That.GetComponent<Scr_Player> ();
 			vPlayerComp.vActing = TF;
 		}
-		if (!TF) {
+
 			Those = GameObject.FindGameObjectsWithTag ("Cat");
 			foreach (GameObject That in Those) {
 				That.gameObject.SendMessage ("StartMoving");
 			}
-		}
+
 	}
 
 

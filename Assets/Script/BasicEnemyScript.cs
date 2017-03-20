@@ -28,6 +28,9 @@ public class BasicEnemyScript : MonoBehaviour {
 	public Vector3 OrbLookpos;
 	public bool OrbDetected;// Bool that defines the orb detection
 	public bool vMoving; //bool that is set when camera charges
+	public AudioSource meow;
+	public AudioSource HitSound;
+	public AudioSource Swing;
 
 	// Attack  8===D
 	public GameObject vAtkBox;
@@ -64,10 +67,11 @@ public class BasicEnemyScript : MonoBehaviour {
 		transform.position = new Vector3(transform.position.x,1f,transform.position.z); // Height Fix  8===D
 		// Attack  8===D
 		vAtkBox.SetActive (false);
-		Sweat.Stop ();
+
 	}
 	// Use this for initialization
 	void Start () {
+		Sweat.gameObject.SetActive (false);
 		vMoving = false;
 		OrbDetected = false;
 		Blockingtime = 0f;
@@ -134,7 +138,7 @@ public class BasicEnemyScript : MonoBehaviour {
 		else if (timeScared > ScareCooldown && EnemyCode == 1 && currentState == "isGettingFear" && currentState !="isGettingHit" ) {
 			startGetScare ();
 		}
-		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear"){
+		else if(currentState == "isIdling" && DogDistance <= attackRange && currentState != "isGettingFear" && vMoving){
 			StartAttack ();
 		}
 		//Walk
@@ -187,13 +191,12 @@ public class BasicEnemyScript : MonoBehaviour {
 	void StartAttack(){
 		ResetStates ();
 		currentState = "isAttacking";
-		Debug.Log ("Attack Started");  // 8===D
 		if (!vAtkHere)
 		{
-			Debug.Log ("Attacked");
 			vAtkTime = 0f;
 			vAtkHere = true;
 			vAtkBox.SetActive (true);
+			Swing.Play ();
 			}
 		myAnimator.SetBool ("Attacking", true);
 		//activate weapon collider
@@ -232,6 +235,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	//Getting damage states
 	void StartGetHit(){
+		HitSound.Play ();
 		myAnimator.SetBool ("Idle", true);
 		ResetStates ();
 		currentState = "isGettingHit";
@@ -246,8 +250,10 @@ public class BasicEnemyScript : MonoBehaviour {
 	//Getting Bark states
 	void StartGetFear(){
 		ResetStates ();
+		meow.Play ();
 		currentState = "isGettingFear";
 		myAnimator.SetBool ("Idle", true);
+		Sweat.gameObject.SetActive (true);
 		Sweat.Play ();
 	}
 	void GetFear(){
@@ -353,7 +359,10 @@ public class BasicEnemyScript : MonoBehaviour {
 		}
 	}
 	void StartMoving(){
-		vMoving = true;
+		if (vMoving)
+			vMoving = false;
+		else
+			vMoving = true;
 	}
 	public void OrbDir(Vector3 orbLocated){
 		OrbDetected = true;

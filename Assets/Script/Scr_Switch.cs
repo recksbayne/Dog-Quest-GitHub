@@ -7,6 +7,7 @@ public class Scr_Switch : MonoBehaviour {
 	public string ObjectsToAffect;
 	public Material vMatOn;
 	public Material vMatOff;
+	public AudioSource SwitchSound;
 	// Use this for initialization
 	void Start () {
 		
@@ -18,6 +19,7 @@ public class Scr_Switch : MonoBehaviour {
 		
 	}
 	void GetHit(){
+		SwitchSound.Play ();
 		if (vOn)
 			vOn = false;
 		else

@@ -6,6 +6,7 @@ public class Scr_Collectable : MonoBehaviour {
 	public GameObject vItem;
 	public bool vIsLoot = true;
 	public int vBoneNumber;
+	public AudioSource BonePick;
 	// Use this for initialization
 	void Start () {
 		if (!vIsLoot) {
@@ -16,6 +17,7 @@ public class Scr_Collectable : MonoBehaviour {
 		}
 	}
 	void GotYou(){
+			BonePick.Play ();
 			GameObject tObj;
 			tObj = Instantiate (vItem);
 			tObj.transform.position = new Vector3 (transform.position.x, transform.position.y + 1f, transform.position.z);
