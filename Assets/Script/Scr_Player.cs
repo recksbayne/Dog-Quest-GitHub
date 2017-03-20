@@ -109,6 +109,11 @@ public class Scr_Player : MonoBehaviour {
 	public bool vHasShovel;
 	public GameObject vShovel;
 
+	//Audio Sources
+	public AudioSource BarkSound;
+	public AudioSource DigSound;
+	public AudioSource SwingSound;
+
 
 	// There can only be one;
 	private bool TheOne;
@@ -214,6 +219,8 @@ public class Scr_Player : MonoBehaviour {
 		float tTmp = 0f;
 		switch (vActionType) {
 		case "Dig":
+			if (aDigUnderFrame == 0f)
+			DigSound.Play ();
 			aBounceFrame = 0f;
 			if (aDigUnderFrame < 1f)
 				aDigUnderFrame += .025f;
@@ -228,6 +235,8 @@ public class Scr_Player : MonoBehaviour {
 			tTmp = -1 * aDigUnder.Evaluate (2f / 3f);// / 4f;
 			break;
 		case "Raise":
+			if (aDigUnderFrame == 1f)
+				DigSound.Play ();
 			aBounceFrame = 0f;
 			if (aDigUnderFrame > 0f){
 				aDigUnderFrame -= .05f;
@@ -362,6 +371,7 @@ public class Scr_Player : MonoBehaviour {
 
 		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel)) && !vAtkHere && vHasAtk) {
 			if (vIsOnSand && vHasShovel) {
+				SwingSound.Play ();
 				myAnimator.Play ("Dig", -1,0f);
 				vUnderground = true;
 				vActing = true;
@@ -378,6 +388,7 @@ public class Scr_Player : MonoBehaviour {
 
 		if ((Input.GetKey (KBark) || Input.GetKey (JBark)) && vBarkCD <= 0f){
 
+			BarkSound.Play ();
 			myAnimator.Play ("Bark", -1,0f);
 			vBarkTime = 0f;
 			vBarkHere = true;

@@ -29,7 +29,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	public bool OrbDetected;// Bool that defines the orb detection
 	public bool vMoving; //bool that is set when camera charges
 	public AudioSource meow;
-	public AudioSource HitSound;
 	public AudioSource Swing;
 
 	// Attack  8===D
@@ -235,7 +234,6 @@ public class BasicEnemyScript : MonoBehaviour {
 	}
 	//Getting damage states
 	void StartGetHit(){
-		HitSound.Play ();
 		myAnimator.SetBool ("Idle", true);
 		ResetStates ();
 		currentState = "isGettingHit";

@@ -15,6 +15,7 @@ public class Scr_Health : MonoBehaviour {
 	private bool vOn;
 	private float vTimer;
 	private int vCount;
+	public AudioSource getHitSound;
 	
 	// Update is called once per frame
 	void Awake(){
@@ -100,6 +101,8 @@ public class Scr_Health : MonoBehaviour {
 			vHealth -= 1;
 			vCount = 0;
 			vTimer = 0f;
+			getHitSound.Play ();
+				
 		}
 		} 
 }
