@@ -6,14 +6,6 @@ public class Scr_Hitbox : MonoBehaviour {
 	public GameObject vPlayer;
 	public bool vIsWeapon = false;
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 	void OnTriggerEnter (Collider Other){
 		switch (Other.tag) {
 		case "TreasureBox":
@@ -23,7 +15,7 @@ public class Scr_Hitbox : MonoBehaviour {
 			Other.SendMessage ("GetHit");
 			break;
 		case "Switch":
-			//if (vIsWeapon)
+			if (vIsWeapon)
 				Other.SendMessage ("GetHit");
 			break;
 		case "Player":

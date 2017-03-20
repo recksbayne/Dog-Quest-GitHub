@@ -8,15 +8,7 @@ public class Scr_Switch : MonoBehaviour {
 	public Material vMatOn;
 	public Material vMatOff;
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 
-	void Update () {
-		
-	}
 	void GetHit(){
 		if (vOn)
 			vOn = false;

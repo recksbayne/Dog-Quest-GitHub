@@ -17,7 +17,9 @@ public class Scr_Canvas : MonoBehaviour {
 	public float vScaleSpeed = 2f;
 	public float vDistance;
 	public int vNextRoom;
+	public int vPrevRoom;
 	public int vCurtRoom = 0;
+	private bool vStartReset;
 
 	// Use this for initialization
 	void Awake(){
@@ -35,7 +37,13 @@ public class Scr_Canvas : MonoBehaviour {
 		
 	// Update is called once per frame
 	void GotoNextRoom(int vNMessage){
-		vNextRoom = vNMessage;
+		if (vNMessage == -1){
+			vNextRoom = vPrevRoom;
+		vStartReset = true;
+	}
+		else {
+			vNextRoom = vNMessage;
+		}
 		vTransition = true;
 		vOpen = false;
 	}
@@ -49,11 +57,12 @@ public class Scr_Canvas : MonoBehaviour {
 				else {
 					vScale = 0f;
 					vOpen = true;
-					//SceneManager.LoadScene ("Assets/_Scenes/"+vNextRoom+".unity");
+					this.SendMessage ("LightUp");
+					if (vStartReset) {
+						vPlayer.SendMessage ("ResetLife");
+					}
+					vStartReset = false;
 					FilterRoom();
-					//Scr_FilterRoom Script = GameObject.GetComponent<Scr_FilterRoom>();
-
-					//Script.FilterRoom (vNextRoom, tInt);
 					Debug.Log ("I should change");
 				}
 			} else {
@@ -95,6 +104,8 @@ public class Scr_Canvas : MonoBehaviour {
 
 
 	void FilterRoom(){
+		Debug.Log ("FilterRoom");
+		vPrevRoom = vCurtRoom;
 		vCurtRoom = SceneManager.GetActiveScene ().buildIndex;
 		switch (vNextRoom) {
 		case 0:
@@ -199,6 +210,7 @@ public class Scr_Canvas : MonoBehaviour {
 			break;
 		}
 		SceneManager.LoadScene(vNextRoom);
+
 		//vCurtRoom = 
 	}
 	

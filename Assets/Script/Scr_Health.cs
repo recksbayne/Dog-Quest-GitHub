@@ -25,14 +25,24 @@ public class Scr_Health : MonoBehaviour {
 		if (vFlicker)
 			Flicker ();
 	}
+	public void ResetLife(){
+		vHealth = 10;
+		foreach (Transform childA in vModel.transform) {
+			childA.GetComponent<MeshRenderer> ().enabled = true;
+			foreach (Transform childB in childA.transform) {
+				childB.GetComponent<MeshRenderer> ().enabled = true;
+				foreach (Transform childC in childB.transform) {
+					childC.GetComponent<MeshRenderer> ().enabled = true;
+				}
+			}
+		}
+	}
 	void Flicker(){
 		if (vTimer >= 0f) {
 			vTimer -= .01f;
 		} else {vCount += 1;
 			vTimer = .1f;
 			if (vOn) {
-				//vModel.GetComponent<MeshRenderer> ().enabled = false;
-				//vModel.GetComponentInChildren<MeshRenderer> ().enabled = false;
 				foreach (Transform childA in vModel.transform) {
 					childA.GetComponent<MeshRenderer> ().enabled = false;
 					foreach (Transform childB in childA.transform) {
@@ -42,11 +52,8 @@ public class Scr_Health : MonoBehaviour {
 						}
 					}
 				}
-				//GameObject[] Those = vModel.GetComponentInChildren
 				vOn = false;
 			} else {
-				//vModel.GetComponent<MeshRenderer> ().enabled = true;
-				//vModel.GetComponentInChildren<MeshRenderer> ().enabled = true;
 				foreach (Transform childA in vModel.transform) {
 					childA.GetComponent<MeshRenderer> ().enabled = true;
 					foreach (Transform childB in childA.transform) {
@@ -67,17 +74,33 @@ public class Scr_Health : MonoBehaviour {
 					}
 					gameObject.SendMessage ("StopGetHit");
 				}
+				if (gameObject.tag == "Player") {
+					if (vHealth <= 0) {
+						GameObject tGO = GameObject.FindGameObjectWithTag ("Canvas");
+						tGO.SendMessage("GotoNextRoom",-1);
+						foreach (Transform childA in vModel.transform) {
+							childA.GetComponent<MeshRenderer> ().enabled = false;
+							foreach (Transform childB in childA.transform) {
+								childB.GetComponent<MeshRenderer> ().enabled = false;
+								foreach (Transform childC in childB.transform) {
+									childC.GetComponent<MeshRenderer> ().enabled = false;
+								}
+							}
+						}
+					}
+					//gameObject.SendMessage ("StopGetHit");
+				}
 			}
 		}
 	}
 	public void GetDamaged(){
-		if (!vFlicker) {
+		if (!vFlicker && vHealth > 0) {
 			vOn = true;
 			vFlicker = true;
 			vHealth -= 1;
 			vCount = 0;
 			vTimer = 0f;
 		}
-		}
+		} 
 }
 
