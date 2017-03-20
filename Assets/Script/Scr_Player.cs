@@ -37,9 +37,7 @@ public class Scr_Player : MonoBehaviour {
 	private bool vLocked = false; // Is Locked
 	public bool vUnderground = false; // Is Locked
 	public bool vIsOnSand = false; // Check if is on sand
-	private bool vAttack = false; // Is Attacking
 	public float vAttackCD; // Attack CoolDown
-	private bool vDigging = false; // Is digging
 	public bool vActing = false; // Is Acting
 
 	// Variables
@@ -331,21 +329,19 @@ public class Scr_Player : MonoBehaviour {
 			return;
 		}
 
-		if (Input.GetKey (KeyCode.Space))
-			transform.position = new Vector3(2f,1f,2f);
-		if (Input.GetKey (KLeft) || Input.GetKey (JLeft)) {
+		if (Input.GetKey (KLeft) || Input.GetAxis ("Horizontal") < 0) {
 			vHoz -= 1;
 			vVer -= 1;
 		}
-		if (Input.GetKey (KRight) || Input.GetKey (JRight)) {
+		if (Input.GetKey (KRight) || Input.GetAxis ("Horizontal") > 0) {
 			vHoz += 1;
 			vVer += 1;
 		}
-		if (Input.GetKey (KDown) || Input.GetKey (JDown)) {
+		if (Input.GetKey (KDown) || Input.GetAxis ("Vertical") < 0) {
 			vVer -= 1;
 			vHoz += 1;
 		}
-		if (Input.GetKey (KUp) || Input.GetKey (JUp)) {
+		if (Input.GetKey (KUp) || Input.GetAxis ("Vertical") > 0) {
 			vVer += 1;
 			vHoz -= 1;
 		}

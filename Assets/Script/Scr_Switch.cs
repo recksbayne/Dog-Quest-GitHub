@@ -9,15 +9,7 @@ public class Scr_Switch : MonoBehaviour {
 	public Material vMatOff;
 	public AudioSource SwitchSound;
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 
-	void Update () {
-		
-	}
 	void GetHit(){
 		SwitchSound.Play ();
 		if (vOn)
