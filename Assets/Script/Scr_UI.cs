@@ -7,7 +7,7 @@ public class Scr_UI : MonoBehaviour {
 
 	public Scr_Health PlayerHealth;
 	public Scr_Player Doggie;
-	private bool start;
+	public bool Prevcanvas;
 
 	// ui objects
 	public Image Background;
@@ -41,7 +41,7 @@ public class Scr_UI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 0;
-		start = false;
+		Prevcanvas = true;
 	}
 	
 	// Update is called once per frame
@@ -49,7 +49,7 @@ public class Scr_UI : MonoBehaviour {
 		
 		BarkBarCooldown.transform.localScale = new Vector3((3f -Doggie.vBarkCD)/ 3f,1f,1f);
 		//Doggie.vBarkTime / Doggie.vBarkLS;
-		if (Input.GetMouseButton (0)) {
+		if (Input.GetMouseButton (0) && !Prevcanvas) {
 			StartGame ();
 		}
 		if(PlayerHealth.vHealth >= 10) {
@@ -120,9 +120,9 @@ public class Scr_UI : MonoBehaviour {
 	}
 	public void StartGame(){
 		StartSound.Play ();
-		Background.CrossFadeAlpha (0.0f, 2.0f, false);
-		StartScreen.CrossFadeAlpha (0.0f, 2.0f, false);
-		StartB.CrossFadeAlpha (0.0f, 2.0f, false);
+		Background.CrossFadeAlpha (0.0f, 1.0f, false);
+		StartScreen.CrossFadeAlpha (0.0f, 1.0f, false);
+		StartB.CrossFadeAlpha (0.0f, 1.0f, false);
 		Time.timeScale = 1;
 	}
 }
