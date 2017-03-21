@@ -356,11 +356,12 @@ public class BasicEnemyScript : MonoBehaviour {
 			StartOrb ();
 		}
 	}
-	void StartMoving(){
+	void StartMoving(bool TF){
+		vMoving = TF;/*
 		if (vMoving)
-			vMoving = false;
+			vMoving = TF;
 		else
-			vMoving = true;
+			vMoving = TF;*/
 	}
 	public void OrbDir(Vector3 orbLocated){
 		OrbDetected = true;

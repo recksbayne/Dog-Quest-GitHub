@@ -49,42 +49,42 @@ public class Scr_UI : MonoBehaviour {
 		}
 		if(PlayerHealth.vHealth >= 10) {
 			l10.enabled = true;
+			l9.enabled = true;
+			l8.enabled = true;
+			l7.enabled = true;
+			l6.enabled = true;
+			l5.enabled = true;
+			l4.enabled = true;
+			l3.enabled = true;
+			l2.enabled = true;
+			l1.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 10) {
 			l10.enabled = false;
-			l9.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 9) {
 			l9.enabled = false;
-			l8.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 8) {
 			l8.enabled = false;
-			l7.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 7) {
 			l7.enabled = false;
-			l6.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 6) {
 			l6.enabled = false;
-			l5.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 5) {
 			l5.enabled = false;
-			l4.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 4) {
 			l4.enabled = false;
-			l3.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 3) {
 			l3.enabled = false;
-			l2.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 2) {
 			l2.enabled = false;
-			l1.enabled = true;
 		}
 		if (PlayerHealth.vHealth < 1) {
 			l1.enabled = false;

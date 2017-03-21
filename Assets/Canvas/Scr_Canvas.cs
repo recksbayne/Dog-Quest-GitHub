@@ -50,6 +50,7 @@ public class Scr_Canvas : MonoBehaviour {
 	}
 	void Update () {
 		if (vTransition) {
+			CatsMove (false);
 			if (!vOpen) {
 				if (vScale > 0f) {
 					vScale -= vScaleSpeed;
@@ -75,6 +76,7 @@ public class Scr_Canvas : MonoBehaviour {
 					vScale = 260f;
 					vTransition = false;
 					MakeThemAct (false);
+					CatsMove (true);
 				}
 			}
 			vHole.transform.localScale = new Vector3 (vScale, vScale, 1f);
@@ -90,17 +92,19 @@ public class Scr_Canvas : MonoBehaviour {
 		foreach (GameObject That in Those) {
 			vPlayerComp = That.GetComponent<Scr_Player> ();
 			vPlayerComp.vActing = TF;}
-		Those = GameObject.FindGameObjectsWithTag ("Player");
+		/*Those = GameObject.FindGameObjectsWithTag ("Player");
 		foreach (GameObject That in Those) {
 			vPlayerComp = That.GetComponent<Scr_Player> ();
 			vPlayerComp.vActing = TF;
+		}*/
+
+	}
+	void CatsMove(bool TF){
+		GameObject[] cats;
+		cats = GameObject.FindGameObjectsWithTag ("Cat");
+		foreach (GameObject That in cats) {
+			That.gameObject.SendMessage ("StartMoving", TF);
 		}
-
-			Those = GameObject.FindGameObjectsWithTag ("Cat");
-			foreach (GameObject That in Those) {
-				That.gameObject.SendMessage ("StartMoving");
-			}
-
 	}
 
 
