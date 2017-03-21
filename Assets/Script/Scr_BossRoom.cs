@@ -5,7 +5,8 @@ using UnityEngine;
 public class Scr_BossRoom : MonoBehaviour {
 	private bool CatsAareDone;
 	public GameObject vNewCats;
-	public GameObject vReward;
+	public GameObject vRewardA;
+	public GameObject vRewardB;
 	public bool vMakeItRain;
 
 	// Use this for initialization
@@ -24,18 +25,29 @@ public class Scr_BossRoom : MonoBehaviour {
 		if (tInt <= 0){
 			if (!CatsAareDone) {
 				tGO = Instantiate (vNewCats);
-				tGO.transform.position = new Vector3 (.5f, 2f, -2f);
+				tGO.SendMessage("StartMoving",true);
+				tGO.transform.position = new Vector3 (.5f, 2f, -5f);
 				tGO = Instantiate (vNewCats);
-				tGO.transform.position = new Vector3 (-3f, 2f, 1.5f);
+				tGO.SendMessage("StartMoving",true);
+				tGO.transform.position = new Vector3 (-6f, 2f, 1.5f);
 				tGO = Instantiate (vNewCats);
-				tGO.transform.position = new Vector3 (4f, 2f, -2f);
+				tGO.SendMessage("StartMoving",true);
+				tGO.transform.position = new Vector3 (7f, 2f, 1.5f);
 				CatsAareDone = true;
 			} else
 				vMakeItRain = true;
-			}
-		if (vMakeItRain) {
-			tGO = Instantiate (vNewCats);
-			tGO.transform.position = new Vector3 (Random.Range(-2f,3f), 2f,Random.Range(-2f,3f));
+		}
+		tInt = 0;
+		Those = GameObject.FindGameObjectsWithTag ("Collectable");
+		foreach (GameObject That in Those) {
+			tInt += 1;
+		}
+		if (vMakeItRain && tInt < 40 && Random.Range(0,30) == 1) {
+			if (Random.value < .5f)
+				tGO = Instantiate (vRewardA);
+			else
+				tGO = Instantiate (vRewardB);
+			tGO.transform.position = new Vector3 (Random.Range(-2,3), 6f,Random.Range(-2,3));
 
 		}
 

@@ -15,6 +15,12 @@ public class Scr_Collectable : MonoBehaviour {
 				Destroy (this.gameObject);
 		}
 	}
+	void Update(){
+		if (transform.position.y > 1f)
+			transform.position = new Vector3 (transform.position.x, transform.position.y - .05f, transform.position.z);
+		else
+			transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
+	}
 	void GotYou(){
 			GameObject tObj;
 			tObj = Instantiate (vItem);

@@ -71,7 +71,7 @@ public class BasicEnemyScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Sweat.gameObject.SetActive (false);
-		vMoving = false;
+		vMoving = true;
 		OrbDetected = false;
 		Blockingtime = 0f;
 		currentState = "none";

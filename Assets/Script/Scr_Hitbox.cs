@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Scr_Hitbox : MonoBehaviour {
 	public GameObject vPlayer;
+	public bool vPlayerOwned = false;
 	public bool vIsWeapon = false;
 	// Use this for initialization
 	void OnTriggerEnter (Collider Other){
@@ -19,7 +20,8 @@ public class Scr_Hitbox : MonoBehaviour {
 				Other.SendMessage ("GetHit");
 			break;
 		case "Player":
-			Other.SendMessage("GetDamaged");
+			if (!vPlayerOwned)
+				Other.SendMessage("GetDamaged");
 			break;
 		}
 	}
