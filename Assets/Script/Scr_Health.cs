@@ -89,7 +89,6 @@ public class Scr_Health : MonoBehaviour {
 							}
 						}
 					}
-					//gameObject.SendMessage ("StopGetHit");
 				}
 			}
 		}

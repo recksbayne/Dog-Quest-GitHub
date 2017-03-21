@@ -11,6 +11,7 @@ public class Scr_Canvas : MonoBehaviour {
 	public GameObject vBlackE;
 	public GameObject vBlackS;
 	public GameObject vBlackW;
+	public GameObject vCong;
 	public bool vTransition; // If start to transition
 	public bool vOpen; // If opening or closing
 	public float vScale;
@@ -59,7 +60,6 @@ public class Scr_Canvas : MonoBehaviour {
 				else {
 					vScale = 0f;
 					vOpen = true;
-					this.SendMessage ("LightUp");
 					if (vStartReset) {
 						vPlayer.SendMessage ("ResetLife");
 					}

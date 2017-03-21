@@ -9,21 +9,13 @@ public class Scr_Player : MonoBehaviour {
 	public KeyCode KRight;
 	public KeyCode KDown;
 	public KeyCode KShovel;
-	public KeyCode KSniff;
 	public KeyCode KBark;
-	public KeyCode KAction; // Extra Action button
 	public KeyCode KCamRotationL;  // Camera rotation
 	public KeyCode KCamRotationR;  // Camera rotation
 
 	// Joystick version
-	public KeyCode JLeft;
-	public KeyCode JUp;
-	public KeyCode JRight;
-	public KeyCode JDown;
 	public KeyCode JShovel;
-	public KeyCode JSniff;
 	public KeyCode JBark;
-	public KeyCode JAction;
 	public KeyCode JCamRotationL;
 	public KeyCode JCamRotationR;
 
@@ -369,7 +361,7 @@ public class Scr_Player : MonoBehaviour {
 				vAtkBox.transform.localPosition = vAtkSpot*vAtkDis;
 		}
 
-		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel)) && !vAtkHere && vHasAtk) {
+		if ((Input.GetKey (KShovel) || Input.GetKey (JShovel) || Input.GetMouseButtonDown(0)) && !vAtkHere && vHasAtk) {
 			if (vIsOnSand && vHasShovel) {
 				SwingSound.Play ();
 				myAnimator.Play ("Dig", -1,0f);
@@ -383,10 +375,7 @@ public class Scr_Player : MonoBehaviour {
 				vAtkBox.SetActive (true);
 			}
 		}
-		if (Input.GetKey (KSniff) || Input.GetKey (JSniff)){}
-
-
-		if ((Input.GetKey (KBark) || Input.GetKey (JBark)) && vBarkCD <= 0f){
+		if ((Input.GetKey (KBark) || Input.GetKey (JBark) || Input.GetMouseButtonDown(1)) && vBarkCD <= 0f){
 
 			BarkSound.Play ();
 			myAnimator.Play ("Bark", -1,0f);
@@ -400,9 +389,6 @@ public class Scr_Player : MonoBehaviour {
 				Enemies[i].gameObject.SendMessage ("DogBarking");
 			}
 		}
-		if (Input.GetKey (KAction) || Input.GetKey (JAction)) {
-		}
-
 		if ((Input.GetKeyDown (KCamRotationL) || Input.GetKeyDown (JCamRotationL)) && !vCamIsMoving) {
 			vCamIsMoving = true;
 			vCamTime = 0f;

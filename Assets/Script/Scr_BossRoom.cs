@@ -22,20 +22,24 @@ public class Scr_BossRoom : MonoBehaviour {
 		foreach (GameObject That in Those) {
 			tInt += 1;
 		}
-		if (tInt <= 0){
+		if (tInt <= 0) {
 			if (!CatsAareDone) {
 				tGO = Instantiate (vNewCats);
-				tGO.SendMessage("StartMoving",true);
+				tGO.SendMessage ("StartMoving", true);
 				tGO.transform.position = new Vector3 (.5f, 2f, -5f);
 				tGO = Instantiate (vNewCats);
-				tGO.SendMessage("StartMoving",true);
+				tGO.SendMessage ("StartMoving", true);
 				tGO.transform.position = new Vector3 (-6f, 2f, 1.5f);
 				tGO = Instantiate (vNewCats);
-				tGO.SendMessage("StartMoving",true);
+				tGO.SendMessage ("StartMoving", true);
 				tGO.transform.position = new Vector3 (7f, 2f, 1.5f);
 				CatsAareDone = true;
-			} else
+			} else{
 				vMakeItRain = true;
+				tGO = GameObject.FindGameObjectWithTag("Canvas");
+				GameObject tGOsub = tGO.transform.FindChild("Spr_Congrats").gameObject;
+				tGOsub.SetActive(true);
+		}
 		}
 		tInt = 0;
 		Those = GameObject.FindGameObjectsWithTag ("Collectable");
