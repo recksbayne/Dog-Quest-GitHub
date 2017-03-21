@@ -19,6 +19,8 @@ public class Scr_UI : MonoBehaviour {
 	public Image Bone;
 	public Text BoneText;
 	public Image StartB;
+	public Image BarkBarCooldown;
+	public float Barscale;
 
 
 	//lifepoints
@@ -44,6 +46,9 @@ public class Scr_UI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		BarkBarCooldown.transform.localScale = new Vector3((3f -Doggie.vBarkCD)/ 3f,1f,1f);
+		//Doggie.vBarkTime / Doggie.vBarkLS;
 		if (Input.GetMouseButton (0)) {
 			StartGame ();
 		}

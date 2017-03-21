@@ -86,7 +86,7 @@ public class Scr_Player : MonoBehaviour {
 	// Bark Parts
 	public GameObject vBarkShpere;
 	public bool vBarkHere; // Bark is present T/F
-	private float vBarkTime; // Bark Countdown to lifespan
+	public float vBarkTime; // Bark Countdown to lifespan
 	public float vBarkLS = 1f; // Bark Life Span
 	public float vBarkCD; // Bark Cool Down
 
